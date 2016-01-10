@@ -1,1 +1,1 @@
-# RSK777
+# RSK777 repository for Risk projekt
