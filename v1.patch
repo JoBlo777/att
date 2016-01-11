@@ -1,0 +1,488 @@
+Index: src/DataSystem.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/DataSystem.java	(revision )
++++ src/DataSystem.java	(revision )
+@@ -0,0 +1,56 @@
++import javafx.beans.property.SimpleStringProperty;
++import javafx.beans.property.StringProperty;
++
++import java.util.HashMap;
++import java.util.Map;
++/**
++ * Created by Paul on 07.01.2016.
++ * Ist ein Singleton, damit GUI und Controller immer auf die gleichen Daten zugreifen
++ */
++public class DataSystem {
++    private static DataSystem system;
++    private Map<String, Nation> nations;
++    private Map<String, Continent> continents;
++    private boolean isPlayerOnesTurn = true;
++    private StringProperty status;
++
++
++
++    private DataSystem(){
++        status = new SimpleStringProperty("Status");
++
++
++    }
++    public static DataSystem getInstance(){
++        if(system==null){
++            system=new DataSystem();
++        }
++        return system;
++    }
++
++    public Map<String, Nation> getNations() {
++        if(nations==null) nations = new HashMap<>();
++        return nations;
++    }
++
++    public String getStatus() {
++        return status.get();
++    }
++
++    public StringProperty statusProperty() {
++        return status;
++    }
++
++    public Map<String, Continent> getContinents() {
++        if(continents == null) continents=new HashMap<>();
++        return continents;
++    }
++
++    public boolean isPlayerOnesTurn() {
++        return isPlayerOnesTurn;
++    }
++
++    public void setPlayerOnesTurn(boolean playerOnesTurn) {
++        isPlayerOnesTurn = playerOnesTurn;
++    }
++}
+\ No newline at end of file
+Index: src/MotionListener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/MotionListener.java	(revision )
++++ src/MotionListener.java	(revision )
+@@ -0,0 +1,13 @@
++import java.awt.*;
++import java.awt.event.*;
++
++public class MotionListener implements MouseMotionListener {
++
++    public void mouseMoved(MouseEvent me) {
++        System.out.println("moved to " + me.getPoint());
++    }
++
++    public void mouseDragged(MouseEvent me) {
++        System.out.println("dragged to " + me.getPoint());
++    }
++}
+Index: src/Nation.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Nation.java	(revision )
++++ src/Nation.java	(revision )
+@@ -0,0 +1,46 @@
++
++import javafx.beans.property.IntegerProperty;
++import javafx.beans.property.SimpleIntegerProperty;
++
++/**
++ * Created by Paul on 07.01.2016.
++ */
++public class Nation {
++    String name;
++    String[] neighbors;
++    Owner owner;
++    IntegerProperty truppCounter;
++
++    public Nation(String name) {
++        this.name = name;
++        truppCounter = new SimpleIntegerProperty(0);
++    }
++
++    public void setNeighbors(String[] neighbors) {
++        this.neighbors = neighbors;
++    }
++
++    public void setOwner(Owner owner) {
++        this.owner = owner;
++    }
++
++    public void setTruppCounter(IntegerProperty truppCounter) {
++        this.truppCounter = truppCounter;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public String[] getNeighbors() {
++        return neighbors;
++    }
++
++    public Owner getOwner() {
++        return owner;
++    }
++
++    public IntegerProperty getTruppCounter() {
++        return truppCounter;
++    }
++}
+\ No newline at end of file
+Index: src/Owner.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Owner.java	(revision )
++++ src/Owner.java	(revision )
+@@ -0,0 +1,19 @@
++
++import javafx.scene.paint.Color;
++import javafx.scene.paint.Paint;
++
++/**
++ * Created by Paul on 07.01.2016.
++ */
++public enum Owner {
++    Player1(Color.BLUE),
++    Player2(Color.RED),
++    Unowned(Color.GRAY);
++
++    Paint color;
++    Owner(Paint color){
++        this.color=color;
++    }
++
++
++}
+Index: src/Territory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Territory.java	(revision )
++++ src/Territory.java	(revision )
+@@ -0,0 +1,9 @@
++
++import java.util.*;
++
++/**
++ * Created by Hugo on 11.01.2016.
++ */
++public class Territory {
++    LinkedList<Patch> listOfpatches = new LinkedList<>();
++}
+Index: src/Window.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Window.java	(revision )
++++ src/Window.java	(revision )
+@@ -0,0 +1,18 @@
++import javax.swing.*;
++
++public class Window extends JFrame {
++
++    public Window() {
++        this.add(new JPanel());
++        this.setSize(400, 500);
++        this.setTitle("Some Rectangles");
++        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
++
++        Listener listener = new Listener();
++        addMouseListener(listener);
++
++        MotionListener motionlistener = new MotionListener();
++        addMouseMotionListener(motionlistener);
++    }
++
++}
+Index: src/Controller.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Controller.java	(revision )
++++ src/Controller.java	(revision )
+@@ -0,0 +1,8 @@
++public class Controller {
++    public Controller(){
++
++    }
++    public void clickedOnNation(String nationID){
++        System.out.println(nationID);
++    }
++}
+\ No newline at end of file
+Index: src/Reinforcement.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Reinforcement.java	(revision )
++++ src/Reinforcement.java	(revision )
+@@ -0,0 +1,6 @@
++
++/**
++ * Created by Hugo on 11.01.2016.
++ */
++public class Reinforcement {
++}
+Index: src/Patch.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Patch.java	(revision )
++++ src/Patch.java	(revision )
+@@ -0,0 +1,6 @@
++
++/**
++ * Created by Hugo on 11.01.2016.
++ */
++public class Patch {
++}
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Main.java	(revision )
++++ src/Main.java	(revision )
+@@ -0,0 +1,145 @@
++
++import javafx.application.Application;
++import javafx.scene.Node;
++import javafx.scene.Scene;
++import javafx.scene.control.Label;
++import javafx.scene.input.MouseEvent;
++import javafx.scene.layout.Background;
++import javafx.scene.layout.BackgroundFill;
++import javafx.scene.layout.Pane;
++import javafx.scene.paint.Color;
++import javafx.scene.shape.*;
++import javafx.stage.Stage;
++
++import java.io.BufferedReader;
++import java.io.FileReader;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Map;
++
++public class Main extends Application {
++
++    Controller controller;
++
++    @Override
++    public void start(Stage primaryStage) throws Exception{
++        Pane root = new Pane();
++        root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE,null,null)));
++
++        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/world.map");
++        BufferedReader br = new BufferedReader(fr);
++        String zeile="";
++
++        DataSystem system = DataSystem.getInstance();
++        Map<String,Nation> Nations = system.getNations();
++
++        while( (zeile = br.readLine())!= null){
++            System.out.println(zeile);
++            String[] parts = zeile.split(" ");
++
++            int i = 1;
++            String name="";
++            String nameNoSpace="";
++            while(parts[i].matches("[A-Za-z]+")){
++                name+=parts[i]+" ";
++                i++;
++            }
++            nameNoSpace=name.replace(" ","");
++
++            if(parts[0].equals("patch-of")){
++
++                Path path = new Path();
++                MoveTo moveTo = new MoveTo();
++                moveTo.setX(Double.parseDouble(parts[i]));
++                moveTo.setY(Double.parseDouble(parts[i+1]));
++                path.getElements().add(moveTo);
++                i=i+2;
++
++                for(;i<parts.length;i=i+2){
++                    LineTo line = new LineTo();
++                    line.setX(Double.parseDouble(parts[i]));
++                    line.setY(Double.parseDouble(parts[i+1]));
++                    path.getElements().add(line);
++                }
++                path.setFill(Owner.Unowned.color);
++                path.setId(nameNoSpace);
++                path.setOnMouseClicked(me -> mouseClickHandler(me));
++                root.getChildren().add(path);
++
++            }
++            else if(parts[0].equals("capital-of")){
++                Nation nation = new Nation(name);
++
++                double x = Double.parseDouble(parts[i]);
++                double y = Double.parseDouble(parts[i+1]);
++
++                Label count = new Label();
++                count.setLayoutX(x);
++                count.setLayoutY(y);
++                count.textProperty().bind(nation.getTruppCounter().asString());
++                count.setId(nameNoSpace);
++                count.setOnMouseClicked(me -> mouseClickHandler(me));
++                system.getNations().put(nameNoSpace,nation);
++                root.getChildren().add(count);
++            }
++            else if(parts[0].equals("neighbors-of")){
++                Nation nation = system.getNations().get(nameNoSpace);
++                List<String> neighbors = new ArrayList<>();
++
++                //":" Symbol überspringen
++                i++;
++
++                while(i<parts.length){
++                    String neighbor="";
++                    while(i<parts.length&&parts[i].matches("[A-Za-z]+")){
++                        neighbor+=parts[i];
++                        i++;
++                    }
++                    neighbors.add(neighbor);
++                    i++; //Aufzählungszeichen überspringen
++                }
++                nation.setNeighbors(neighbors.toArray(new String[neighbors.size()]));
++            }
++            else if(parts[0].equals("continent")){
++                List<String> nations = new ArrayList<>();
++                int addValue = Integer.parseInt(parts[i]);
++                //addValue und ":" überspringen
++                i=i+2;
++
++                while(i<parts.length){
++                    String nation="";
++                    while(i<parts.length&&parts[i].matches("[A-Za-z]+")){
++                        nation+=parts[i];
++                        i++;
++                    }
++                    nations.add(nation);
++                    i++; //Aufzählungszeichen überspringen
++                }
++
++                system.getContinents().put(nameNoSpace,new Continent(name,addValue,nations.toArray(new String[nations.size()])));
++            }
++        }
++        br.close();
++
++        Label status = new Label();
++        status.textProperty().bind(system.statusProperty());
++        status.setLayoutX(400);
++        status.setLayoutY(600);
++        root.getChildren().add(status);
++
++        Scene scene = new Scene(root,1300,650);
++        primaryStage.setTitle("All those Territories");
++        primaryStage.setScene(scene);
++        primaryStage.show();
++
++        controller = new Controller();
++    }
++
++    private void mouseClickHandler(MouseEvent me){
++        controller.clickedOnNation(((Node)me.getSource()).getId());
++    }
++
++    public static void main(String[] args) {
++        launch(args);
++    }
++}
+Index: src/Army.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Army.java	(revision )
++++ src/Army.java	(revision )
+@@ -0,0 +1,5 @@
++/**
++ * Created by Hugo on 11.01.2016.
++ */
++public class Army {
++}
+Index: src/Continent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Continent.java	(revision )
++++ src/Continent.java	(revision )
+@@ -0,0 +1,26 @@
++/**
++ * Created by Paul on 07.01.2016.
++ */
++public class Continent {
++    String name;
++    int addValue;
++    String[] nations;
++
++    public Continent(String name, int addValue, String[] nations) {
++        this.name = name;
++        this.addValue = addValue;
++        this.nations = nations;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public int getAddValue() {
++        return addValue;
++    }
++
++    public String[] getNations() {
++        return nations;
++    }
++}
+\ No newline at end of file
+Index: src/Listener.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/Listener.java	(revision )
++++ src/Listener.java	(revision )
+@@ -0,0 +1,23 @@
++import java.awt.*;
++import java.awt.event.*;
++
++public class Listener implements MouseListener {
++
++    public void mousePressed(MouseEvent me) {
++        System.out.println("down at " + me.getPoint());
++    }
++
++    public void mouseExited(MouseEvent me) {
++    }
++
++    public void mouseEntered(MouseEvent me) {
++    }
++
++    public void mouseReleased(MouseEvent me) {
++        System.out.println("up at " + me.getPoint());
++    }
++
++    public void mouseClicked(MouseEvent me) {
++        System.out.println("click at " + me.getPoint());
++    }
++}
