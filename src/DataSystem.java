@@ -3,10 +3,6 @@ import javafx.beans.property.StringProperty;
 
 import java.util.HashMap;
 import java.util.Map;
-/**
- * Created by Paul on 07.01.2016.
- * Ist ein Singleton, damit GUI und Controller immer auf die gleichen Daten zugreifen
- */
 public class DataSystem {
     private static DataSystem system;
     private Map<String, Nation> nations;
