@@ -14,8 +14,6 @@ public class DataSystem {
 
     private DataSystem(){
         status = new SimpleStringProperty("Status");
-
-
     }
     public static DataSystem getInstance(){
         if(system==null){

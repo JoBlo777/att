@@ -1,6 +1,3 @@
-/**
- * Created by Paul on 07.01.2016.
- */
 public class Continent {
     String name;
     int addValue;
