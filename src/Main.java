@@ -1,5 +1,6 @@
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -126,6 +127,8 @@ public class Main extends Application {
         status.setLayoutX(400);
         status.setLayoutY(600);
         root.getChildren().add(status);
+        System.out.println("RS" + Nations.toString()); //rfs
+
 
         Scene scene = new Scene(root,1300,650);
         primaryStage.setTitle("All those Territories");
@@ -136,7 +139,26 @@ public class Main extends Application {
     }
 
     private void mouseClickHandler(MouseEvent me){
+//original        controller.clickedOnNation(((Node)me.getSource()).getId());
+        //rs start
+        //((Node)me.
+        String id = ((Node)me.getSource()).getId();
+        System.out.println(id);
+        ObservableList<Node> ol = ((Node)me.getSource()).getScene().getRoot().getChildrenUnmodifiable();
+        for (int i = 0; i < ol.size()-1; i++){
+            if (ol.get(i).getId().equals(id)) {
+                System.out.println("id " + id + " found");
+                ((Path)ol.get(i)).setFill(Owner.Player1.color);
+                ((Path)ol.get(i+1)).setFill(Owner.Player2.color);
+                //p.setFill(Owner.Player1.color);
+                //((Path)ol.get(i)).setFill();
+                break;
+            }
+        }
+        //System.out.println("zzz" + (Path)ol.get(0));
+
         controller.clickedOnNation(((Node)me.getSource()).getId());
+        //rs end
     }
 
     public static void main(String[] args) {

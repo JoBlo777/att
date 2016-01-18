@@ -1,6 +1,7 @@
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+
 public class Nation {
     String name;
     String[] neighbors;
