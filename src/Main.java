@@ -389,8 +389,17 @@ public class Main extends Application {
         String id = ((Node)me.getSource()).getId();
         if (me.getButton() == MouseButton.PRIMARY)
             controller.clickedOnNation(id);
-        else if (me.getButton() == MouseButton.SECONDARY)
-            controller.incrementTroopsOnNation(id);
+        else if (me.getButton() == MouseButton.SECONDARY) {
+            ContextMenu m = new ContextMenu(new MenuItem("add troops by 1"));
+            //controller.incrementTroopsOnNation(id);
+            m.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent e) {
+                    System.out.println("increment troops by one");
+                    controller.incrementTroopsOnNation(id);
+                }
+            });
+            m.show((Node)me.getSource(), me.getScreenX(), me.getScreenY());
+        }
         //rs end
     }
 
