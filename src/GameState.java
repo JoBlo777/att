@@ -16,8 +16,9 @@ public class GameState {
     public StringProperty status;
     private int nationCount;
     private int acquiredCount;
-    private GameProgress gameProgress;
-
+    public GameProgress gameProgress;
+    public Nation[] attackNationTuple = new Nation[2];
+    public int attackNationTupleCount = 0;
     public enum GameProgress {
         Landnahme(Color.BLUE),
         Verstärkung(Color.RED),
@@ -56,7 +57,7 @@ public class GameState {
         return (this.nationCount == this.acquiredCount);
     }
 
-    public boolean attackSuccesful (Nation attacker, Nation defender){
+    public boolean isAttackSuccesful (Nation attacker, Nation defender){
         int[]attackerCubes;
         int[]defenderCubes;
 
@@ -114,9 +115,9 @@ public class GameState {
 //die höchsten beiden Würfelzahlen werden verglichen, es wird festgestellt, ob der Angriff erfolgreich war oder nicht
         boolean win;
 
-        if (attackerCubes[1]>= defenderCubes[1]) {
+        if (attackerCubes[0]>= defenderCubes[0]) {
             defender.decrementTroopCount();
-            if (attackerCubes[2] >= defenderCubes[2]){
+            if (attackerCubes[1] >= defenderCubes[1]){
                 defender.setTroopCount(attacker.troopCount);
                 defender.owner = attacker.owner;
                 win = true;
@@ -129,7 +130,7 @@ public class GameState {
         else {
             attacker.decrementTroopCount();
             win = false;
-            if (attackerCubes[2] >= defenderCubes[2]){
+            if (attackerCubes[1] >= defenderCubes[1]){
                 defender.decrementTroopCount();
             }
             else {

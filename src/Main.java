@@ -58,9 +58,9 @@ public class Main extends Application {
         //root.getBackground().
         //root.setBackground(new Background(new BackgroundFill(Color.AQUA,null,null)));
 
-        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/world.map");
-        //rs FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/africa.map");
-        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
+        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/world.map");
+        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/africa.map");
+        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
         BufferedReader br = new BufferedReader(fr);
         String zeile="";
 
