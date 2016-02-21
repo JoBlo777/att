@@ -31,6 +31,9 @@ public class Nation extends Path {
         setFill(owner.color);
     }
 
+    public void decrementTroopCount() {
+        this.troopCount.setValue(new Integer(this.getTroopCount().getValue().intValue() - 1));
+    }
     public void incrementTroopCount() {
          this.troopCount.setValue(new Integer(this.getTroopCount().getValue().intValue() + 1));
     }

@@ -3,9 +3,11 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 public class GameState {
     private static GameState system;
     private Map<String, Nation> nations;
@@ -54,6 +56,88 @@ public class GameState {
         return (this.nationCount == this.acquiredCount);
     }
 
+    public boolean attackSuccesful (Nation attacker, Nation defender){
+        int[]attackerCubes;
+        int[]defenderCubes;
+
+
+//Abchecken wieviele Armeen angreifen können, es wird immer das Maximum hergenommen, dann wird ein Array mit Würfelzahlen erstellt
+        if (attacker.troopCount.getValue() > 3) {
+            int dice1 = (int) (Math.random() * 5 + 1);
+            int dice2 = (int) (Math.random() * 5 + 1);
+            int dice3 = (int) (Math.random() * 5 + 1);
+
+            attackerCubes = new int[]{dice1, dice2, dice3};
+        }
+        else if (attacker.troopCount.getValue() == 3) {
+            int dice1 = (int) (Math.random() * 5 + 1);
+            int dice2 = (int) (Math.random() * 5 + 1);
+            attackerCubes = new int[]{dice1, dice2};
+        }
+        else if (attacker.troopCount.getValue() == 2) {
+            int dice1 = (int) (Math.random() * 5 + 1);
+            attackerCubes = new int[]{dice1};
+        }
+        else {
+            return false;
+        }
+
+        if (defender.troopCount.getValue() >= 2) {
+            int dice1 = (int) (Math.random() * 5 + 1);
+            int dice2 = (int) (Math.random() * 5 + 1);
+
+            defenderCubes = new int[]{dice1, dice2};
+        }
+        else {
+            int dice1 = (int) (Math.random() * 5 + 1);
+
+            defenderCubes = new int[]{dice1};
+        }
+
+//Die Arrays werden in absteigender reihenfolge sortiert
+        Arrays.sort(attackerCubes);
+
+        for (int i = 0, j = attackerCubes.length - 1; i < j; i++, j--) {
+            int tmp = attackerCubes[i];
+            attackerCubes[i] = attackerCubes[j];
+            attackerCubes[j] = tmp;
+        }
+        Arrays.sort(defenderCubes);
+
+        for (int i = 0, j = defenderCubes.length - 1; i < j; i++, j--) {
+            int tmp = defenderCubes[i];
+            defenderCubes[i] = defenderCubes[j];
+            defenderCubes[j] = tmp;
+        }
+
+
+//die höchsten beiden Würfelzahlen werden verglichen, es wird festgestellt, ob der Angriff erfolgreich war oder nicht
+        boolean win;
+
+        if (attackerCubes[1]>= defenderCubes[1]) {
+            defender.decrementTroopCount();
+            if (attackerCubes[2] >= defenderCubes[2]){
+                defender.setTroopCount(attacker.troopCount);
+                defender.owner = attacker.owner;
+                win = true;
+            }
+            else {
+                attacker.decrementTroopCount();
+                win = false;
+            }
+        }
+        else {
+            attacker.decrementTroopCount();
+            win = false;
+            if (attackerCubes[2] >= defenderCubes[2]){
+                defender.decrementTroopCount();
+            }
+            else {
+                attacker.decrementTroopCount();
+            }
+        }
+        return win;
+    }
     public int getAcquiredCount(){
         return this.acquiredCount;
     }

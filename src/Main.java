@@ -37,7 +37,8 @@ public class Main extends Application {
         //rs end
 
         //BorderPane root = new BorderPane();
-        BorderPane root = new BorderPane();
+        Pane root = new Pane();
+        BorderPane bp = new BorderPane();
         ToolBar toolbar = new ToolBar();
         toolbar.setBackground(new Background(new BackgroundFill(Color.AQUA,null,null)));
         ContextMenu m = new ContextMenu(new MenuItem("help"));
@@ -45,12 +46,15 @@ public class Main extends Application {
         HBox statusbar = new HBox();
         statusbar.setBackground(new Background(new BackgroundFill(Color.DARKRED,null,null)));
         Node appContent = new Path();
-        root.setTop(toolbar);
-        root.setCenter(appContent);
-        root.setBottom(statusbar);
+        bp.setTop(toolbar);
+        bp.setCenter(appContent);
+        bp.setBottom(statusbar);
 
-        root.setRight(new Text("RIGHT SIDEBAR - CONTROLS"));
-        root.setLeft(new Text("LEFT SIDEBAR - CONTROLS"));
+        bp.setRight(new Text("RIGHT SIDEBAR - CONTROLS"));
+        bp.setLeft(new Text("LEFT SIDEBAR - CONTROLS"));
+        bp.setCenter(new Text("LET´S PLAY!"));
+        bp.setCenter(root);
+
         //root.getBackground().
         //root.setBackground(new Background(new BackgroundFill(Color.AQUA,null,null)));
 
@@ -199,7 +203,7 @@ public class Main extends Application {
         System.out.println("nationcount " + system.getNationCount()); //rfs
 
 
-        Scene scene = new Scene(root,1300,650, Color.BLANCHEDALMOND);
+        Scene scene = new Scene(bp,1300,650, Color.BLANCHEDALMOND);
         primaryStage.setTitle("All those Territories");
         primaryStage.setScene(scene);
         //rs debugging
