@@ -3,10 +3,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class GameState {
     private static GameState system;
@@ -19,6 +16,8 @@ public class GameState {
     public GameProgress gameProgress;
     public Nation[] attackNationTuple = new Nation[2];
     public int attackNationTupleCount = 0;
+    private HashMap<Owner,ArrayList<Nation>> ownedNationsByPlayer;
+
     public enum GameProgress {
         Landnahme(Color.BLUE),
         Verstärkung(Color.RED),
@@ -35,6 +34,9 @@ public class GameState {
     private GameState(){
         status = new SimpleStringProperty("Status");
         gameProgress = GameProgress.Landnahme;
+        ownedNationsByPlayer = new HashMap<Owner,ArrayList<Nation>>();
+        ownedNationsByPlayer.put(Owner.Player1,null);
+        ownedNationsByPlayer.put(Owner.Player2,null);
     }
 
     public static GameState getInstance(){
@@ -48,7 +50,88 @@ public class GameState {
         this.acquiredCount++;
     }
 
+    public void updateNationsOwnedBy(Owner newOwner, Nation nation){
+        if (nation.getOwner() != null &&
+            nation.getOwner().equals(newOwner))
+        return;
+        if (nation.getOwner() == null) {
+            //rs nation.setOwner(newOwner);
+            //rs stat
+            nation.owner = newOwner;
+            newOwner.incrementOwnedNationCount();
+            //GameState.getInstance().updateNationsOwnedBy(owner,this);
+            nation.setFill(newOwner.color);
+            // rs end
+            ArrayList<Nation> nations = ownedNationsByPlayer.get(newOwner);
+            if (nations == null) {
+                nations = new ArrayList<Nation>();
+            }
+            nations.add(nation);
+            this.ownedNationsByPlayer.put(newOwner, nations);
+        }
+        else if (!nation.getOwner().equals(newOwner)){
+            ArrayList<Nation> nations = ownedNationsByPlayer.get(nation.getOwner());
+            for (int i = 0; i < nations.size(); i++) {
+                if (nations.get(i).getName().equals(nation.getName())) {
+                    nations.remove(i);
+                    ownedNationsByPlayer.get(newOwner).add(nation);
+                    //rs nation.setOwner(newOwner);
+                    //rs stat
+                    nation.owner = newOwner;
+                    newOwner.incrementOwnedNationCount();
+                    //GameState.getInstance().updateNationsOwnedBy(owner,this);
+                    nation.setFill(newOwner.color);
+                    // rs end
+                    break;
+                }
+            }
+        }
+/*
+        Owner oldOwner;
+        if (newOwner == Owner.Player1)
+            oldOwner = Owner.Player2;
+        else
+            oldOwner = Owner.Player1;
 
+        if (this.ownedNationsByPlayer.get(newOwner) != null) {
+            ArrayList<Nation> nations = ownedNationsByPlayer.get(newOwner);
+            for (int i = 0; i < nations.size(); i++) {
+                if (nations.get(i).getName().equals(nation.getName())) {
+                    nations.remove(i);
+                    ownedNationsByPlayer.get(newOwner).add(nation);
+                }
+            }
+
+            this.ownedNationsByPlayer.get(newOwner).add(nation);
+        }
+        else {
+            ArrayList<Nation> nations = new ArrayList<>();
+            nations.add(nation);
+            this.ownedNationsByPlayer.put(newOwner,nations);
+        }
+        */
+        incrementAcquiredCount();
+    }
+
+    public String printNationsOwnedBy(Owner owner){
+        String o = "";
+        String[] s = getNationsOwnedBy(owner);
+        for (String value: s) {
+            o += " " + value;
+        }
+        return o;
+    }
+    public String[] getNationsOwnedBy(Owner owner){
+        if (ownedNationsByPlayer.isEmpty() ||
+            ownedNationsByPlayer.containsKey(owner) == false)
+            return null;
+        ArrayList<Nation> nations = ownedNationsByPlayer.get(owner);
+        String[] nationsAsString = new String[nations.size()];
+        for (int i = 0; i <nations.size(); i++) {
+            nationsAsString[i] = nations.get(i).getName();
+        }
+        return nationsAsString;
+    }
     public void incrementNationCount(){
         this.nationCount++;
     }
@@ -76,6 +159,7 @@ public class GameState {
         }
 
     }
+
     public boolean isAttackSuccesful (Nation attacker, Nation defender){
         int[]attackerCubes;
         int[]defenderCubes;

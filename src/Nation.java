@@ -25,12 +25,19 @@ public class Nation extends Path {
     }
 
     public void setOwner(Owner owner) {
-        this.owner = owner;
-        this.owner.incrementOwnedNationCount();
-        GameState.getInstance().incrementAcquiredCount();
-        setFill(owner.color);
+     //rs    this.owner = owner;
+     //rs    this.owner.incrementOwnedNationCount();
+        GameState.getInstance().updateNationsOwnedBy(owner,this);
+     //rs    setFill(owner.color);
     }
 
+    public boolean isNeighbourOf (Nation nation){
+        for (String nationId: neighbors){
+            if (nationId.equals(nation.getName()))
+                return true;
+        }
+        return false;
+    }
     public void decrementTroopCount() {
         this.troopCount.setValue(new Integer(this.getTroopCount().getValue().intValue() - 1));
     }
