@@ -390,7 +390,9 @@ public class Main extends Application {
         if (me.getButton() == MouseButton.PRIMARY)
             controller.clickedOnNation(id);
         else if (me.getButton() == MouseButton.SECONDARY) {
-            ContextMenu m = new ContextMenu(new MenuItem("add troops by 1"));
+            MenuItem i = new MenuItem("add troops by 1");
+            i.setDisable(false);
+            ContextMenu m = new ContextMenu(i);
             //controller.incrementTroopsOnNation(id);
             m.setOnAction(new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent e) {
@@ -398,6 +400,7 @@ public class Main extends Application {
                     controller.incrementTroopsOnNation(id);
                 }
             });
+
             m.show((Node)me.getSource(), me.getScreenX(), me.getScreenY());
         }
         //rs end
