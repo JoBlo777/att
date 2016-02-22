@@ -72,6 +72,7 @@ public class Controller {
                         s.attackNationTuple[0].setOwner(Owner.Player2);
                         s.attackNationTuple[1].setOwner(Owner.Player2);
                     }
+                    s.attackNationTupleCount = 0;
                 }
                 // if all nations owned by either Player1 or Player2 set s.gameProgress = GameState.GameProgress.GameOver;
                 break;
