@@ -31,7 +31,7 @@ public class Controller {
                 if (n != null) {
                     //s.updateNationsOwnedBy(Owner.Player2, n);
                     n.setOwner(Owner.Player2);
-                    n.setTroopCountInt(5);  // damit er was zum verteidugen hat
+                    n.setTroopCountInt(10);  // damit er was zum verteidugen hat
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
