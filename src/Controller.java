@@ -3,6 +3,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 
+import java.util.Iterator;
+
 public class Controller {
     public Controller(){
 
@@ -29,8 +31,7 @@ public class Controller {
                 if (n != null) {
                     //s.updateNationsOwnedBy(Owner.Player2, n);
                     n.setOwner(Owner.Player2);
-                    n.incrementTroopCount(); // damit er was zum verteidugen hat
-                    n.incrementTroopCount(); // damit er was zum verteidugen hat
+                    n.setTroopCountInt(5);  // damit er was zum verteidugen hat
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
@@ -74,9 +75,10 @@ public class Controller {
                     s.attackNationTuple[0] = nation;
                     s.attackNationTupleCount++;
                 }
-                else if (s.attackNationTupleCount == 1 &&
+                else if (s.attackNationTupleCount == 1 && // let's attack Attacker und Defender gesetzt
                         (nation.getOwner() == Owner.Player2)
                         && s.attackNationTuple[0].isNeighbourOf(nation)) {
+                    s.attackNationTupleCount++;
                     s.attackNationTuple[1] = nation;
                     if (s.isAttackSuccesful(s.attackNationTuple[0], s.attackNationTuple[1])) {
                         System.out.println("CONQUERED");
@@ -86,7 +88,7 @@ public class Controller {
                         //s.attackNationTuple[1].setOwner(Owner.Player1);
                     } else {
                         System.out.println("LOST");
-                        s.attackNationTuple[0].setOwner(Owner.Player2);
+                        //s.attackNationTuple[0].setOwner(Owner.Player2);
                         //s.updateNationsOwnedBy(Owner.Player2, s.attackNationTuple[0]);
                         //s.updateNationsOwnedBy(Owner.Player2, s.attackNationTuple[1]);
                         //s.attackNationTuple[0].setOwner(Owner.Player2);
@@ -94,12 +96,47 @@ public class Controller {
                     }
                     System.out.println("nach angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
                     System.out.println("nach angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
-                    s.attackNationTupleCount = 0;
-                    // Player2 turn AI
                 }
-                if (s.isGameOver())
+                // if all nations owned by either Player1 or Player2 GameOver
+                if (s.isGameOver()) {
                     s.gameProgress = GameState.GameProgress.GameOver;
-                // if all nations owned by either Player1 or Player2 set s.gameProgress = GameState.GameProgress.GameOver;
+                }
+                if (s.attackNationTupleCount > 1) { //AI = Player2
+                    System.out.println("AI " + s.attackNationTupleCount);
+                    boolean cont = true;
+                    for (String id: s.getNationsOwnedBy(Owner.Player1)){
+                        if (!cont)
+                            break;
+                        Iterator<Nation> i = s.nations.values().iterator();
+                        while (cont && i.hasNext()){
+                            nation = i.next();
+                            if (s.nations.get(id).isNeighbourOf(nation)){
+                                System.out.println("match");
+                                System.out.println("attacker id"  + nation.getId() + " attacker owner " + nation.getOwner());
+                                System.out.println("defender id"  + s.nations.get(id) + " defender owner " + s.nations.get(id).getOwner());
+                                if (s.isAttackSuccesful(nation, s.nations.get(id))) {
+                                    System.out.println("AI CONQUERED");
+                                    //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[0]);
+                                    //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[1]);
+                                    //s.attackNationTuple[0].setOwner(Owner.Player1);
+                                    //s.attackNationTuple[1].setOwner(Owner.Player1);
+                                } else {
+                                    System.out.println("AI LOST");
+                                    //s.attackNationTuple[0].setOwner(Owner.Player2);
+                                    //s.updateNationsOwnedBy(Owner.Player2, s.attackNationTuple[0]);
+                                    //s.updateNationsOwnedBy(Owner.Player2, s.attackNationTuple[1]);
+                                    //s.attackNationTuple[0].setOwner(Owner.Player2);
+                                    //s.attackNationTuple[1].setOwner(Owner.Player2);
+                                }
+                                System.out.println("nach angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
+                                System.out.println("nach angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
+                                s.attackNationTupleCount = 0;
+                                cont = false;
+                            }
+                        }
+                    }
+                }
+
                 break;
             }
             case GameOver: {

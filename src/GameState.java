@@ -7,7 +7,7 @@ import java.util.*;
 
 public class GameState {
     private static GameState system;
-    private Map<String, Nation> nations;
+    public Map<String, Nation> nations;
     private Map<String, Continent> continents;
     private boolean isPlayerOnesTurn = true;
     public StringProperty status;
