@@ -9,7 +9,8 @@ capital-of East Africa 731 337
 capital-of Egypt 648 244
 capital-of North Africa 542 272
 neighbors-of North Africa : Congo - Egypt - East Africa
-neighbors-of Egypt : East Africa
-neighbors-of East Africa : Congo - South Africa
-neighbors-of Congo : South Africa
+neighbors-of Egypt : North Africa - East Africa
+neighbors-of East Africa : Congo - South Africa - North Africa
+neighbors-of Congo : South Africa - North Africa - East Africa
+neighbors-of South Africa : Congo - East Africa
 continent Africa 3 : North Africa - Egypt - East Africa - Congo - South Africa

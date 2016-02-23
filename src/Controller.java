@@ -34,7 +34,7 @@ public class Controller {
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
-                System.out.println("clicked count " + s.getAcquiredCount());
+                System.out.println("acquired count " + s.getAcquiredCount());
                 if (s.allClicked())
  //test                   s.gameProgress = GameState.GameProgress.Verstärkung;
                 s.gameProgress = GameState.GameProgress.Angreifen; // test

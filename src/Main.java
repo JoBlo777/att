@@ -1,5 +1,6 @@
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -391,18 +392,28 @@ public class Main extends Application {
         if (me.getButton() == MouseButton.PRIMARY) {
             if (GameState.getInstance().gameProgress == GameState.GameProgress.GameOver){
                 System.out.println("GAMEOVER");
-                MenuItem i = new MenuItem("GAMEOVER - Would you like to FIGHT again?");
+                MenuItem i = new MenuItem("GAMEOVER - Would you like to FIGHT again ?");
                 i.setDisable(false);
-                ContextMenu m = new ContextMenu(i);
+                MenuItem i2 = new MenuItem("GAMEOVER - Exit ?");
+                i2.setDisable(false);
+                ContextMenu m = new ContextMenu();
+                m.getItems().add(i);
+                m.getItems().add(i2);
                 //controller.incrementTroopsOnNation(id);
-                m.setOnAction(new EventHandler<ActionEvent>() {
+                i.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent e) {
                         System.out.println("GAMEOVER - Would you like to FIGHT again?");
                         GameState.resetGame();
                     }
                 });
+                i2.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e) {
+                        System.out.println("GAMEOVER - EXIT?");
+                        GameState.resetGame();
+                        Platform.exit();
+                    }
+                });
                 m.show((Node)me.getSource(), me.getScreenX(), me.getScreenY());
-                return;
             }
             controller.clickedOnNation(id);
         }
