@@ -1,7 +1,4 @@
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.Node;
+import javafx.scene.shape.Path;
 
 import java.util.Iterator;
 
@@ -18,7 +15,7 @@ public class Controller {
 
     public void clickedOnNation(String nationID){
         GameState s = GameState.getInstance();
-        Nation n = s.getNations().get(nationID);
+        NationIF n = s.getNations().get(nationID);
 
         switch(s.gameProgress) {
             case Landnahme: {
@@ -31,7 +28,7 @@ public class Controller {
                 if (n != null) {
                     //s.updateNationsOwnedBy(Owner.Player2, n);
                     n.setOwner(Owner.Player2);
-                    n.setTroopCountInt(10);  // damit er was zum verteidugen hat
+                    n.setTroopCountInt(4);  // damit er was zum verteidugen hat
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
@@ -65,7 +62,7 @@ public class Controller {
                 System.out.println("ANGREIFEN STATE");
                 System.out.println("vor angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
                 System.out.println("vor angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
-                Nation nation = s.getNations().get(nationID);
+                NationClass nation = (NationClass) s.getNations().get(nationID);
                 System.out.println("owner " + nation.getOwner() + "tuplecount " + s.attackNationTupleCount);
                 //reset wenn zweitesmal Angreifer gewählt
                 if (s.attackNationTupleCount == 1 && nation.getOwner() == Owner.Player1)
@@ -77,7 +74,7 @@ public class Controller {
                 }
                 else if (s.attackNationTupleCount == 1 && // let's attack Attacker und Defender gesetzt
                         (nation.getOwner() == Owner.Player2)
-                        && s.attackNationTuple[0].isNeighbourOf(nation)) {
+                        /* rs && s.attackNationTuple[0].isNeighbourOf(nation) */) {
                     s.attackNationTupleCount++;
                     s.attackNationTuple[1] = nation;
                     if (s.isAttackSuccesful(s.attackNationTuple[0], s.attackNationTuple[1])) {
@@ -107,12 +104,12 @@ public class Controller {
                     for (String id: s.getNationsOwnedBy(Owner.Player1)){
                         if (!cont)
                             break;
-                        Iterator<Nation> i = s.nations.values().iterator();
+                        Iterator<NationClass> i = s.nations.values().iterator();
                         while (cont && i.hasNext()){
                             nation = i.next();
                             if (s.nations.get(id).isNeighbourOf(nation)){
                                 System.out.println("match");
-                                System.out.println("attacker id"  + nation.getId() + " attacker owner " + nation.getOwner());
+                                System.out.println("attacker id"  + ((Path)nation).getId() + " attacker owner " + nation.getOwner());
                                 System.out.println("defender id"  + s.nations.get(id) + " defender owner " + s.nations.get(id).getOwner());
                                 if (s.isAttackSuccesful(nation, s.nations.get(id))) {
                                     System.out.println("AI CONQUERED");

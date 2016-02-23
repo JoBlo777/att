@@ -6,23 +6,23 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.input.*;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javafx.scene.input.MouseEvent;
-import javafx.stage.WindowEvent;
 //import org.*;
 //import org.scenicview.ScenicView;
 
@@ -67,7 +67,7 @@ public class Main extends Application {
         String zeile="";
 
         GameState system = GameState.getInstance();
-        Map<String,Nation> Nations = system.getNations();
+        Map<String, NationClass> Nations = system.getNations();
 
         while( (zeile = br.readLine())!= null){
             System.out.println(zeile);
@@ -83,24 +83,41 @@ public class Main extends Application {
             nameNoSpace=name.replace(" ","");
 
             if(parts[0].equals("patch-of")){
-                Nation nation = new Nation(nameNoSpace);
+                NationIF nation;
+                boolean childNation = false;
+                if (system.getNations().get(nameNoSpace) != null){
+                    nation = new PartOfNationClass(system.getNations().get(nameNoSpace));
+                    childNation = true;
+                }
+                else {
+                    childNation = false;
+                    nation = new NationClass(nameNoSpace);
+                }
                 MoveTo moveTo = new MoveTo();
                 moveTo.setX(Double.parseDouble(parts[i]));
                 moveTo.setY(Double.parseDouble(parts[i+1]));
-                nation.getElements().add(moveTo);
+                ((Path)nation).getElements().add(moveTo);
                 i=i+2;
 
                 for(;i<parts.length;i=i+2){
                     LineTo line = new LineTo();
                     line.setX(Double.parseDouble(parts[i]));
                     line.setY(Double.parseDouble(parts[i+1]));
-                    nation.getElements().add(line);
+                    ((Path)nation).getElements().add(line);
                 }
-                nation.setFill(Owner.Unowned.color);
-                if (nameNoSpace.equals("CentralAmerica"))
-                    nation.setFill(Color.BLACK);
-                nation.setId(nameNoSpace);
-
+                ((Path)nation).setFill(Owner.Unowned.color);
+                if (nameNoSpace.equals("NorthWestTerritory"))
+                    ((Path)nation).setFill(Color.BLACK);
+                ((Path)nation).setId(nameNoSpace);
+                if (childNation) {
+                    System.out.println("existsNation " + ((Path)nation).getId());
+                    ((PartOfNationClass)nation).addPartOfNation(nation);
+                }
+                else {
+                    System.out.println("newNation " + ((Path)nation).getId());
+                    system.getNations().put(nameNoSpace, (NationClass)nation);
+                    system.incrementNationCount();
+                }
                 //rs start
                 final ContextMenu contextMenu = new ContextMenu();
                 contextMenu.setOnShowing(new EventHandler<WindowEvent>() {
@@ -133,25 +150,25 @@ public class Main extends Application {
                 //textField.setContextMenu(contextMenu);
                 toolbar.setContextMenu(contextMenu);
                 //root.getChildren().add(textField);
-                //rs end
                 ContextMenu m2 = new ContextMenu(new MenuItem("help"));
-                nation.setAccessibleHelp("HELLO");
-                nation.setOnContextMenuRequested(e -> {
+                ((Path)nation).setAccessibleHelp("HELLO");
+                ((Path)nation).setOnContextMenuRequested(e -> {
                     mouseClickHandler2(e);
                 });
-                nation.setOnMouseClicked(me -> mouseClickHandler(me));
-                root.getChildren().add(nation);
+                //rs end
+                ((Path)nation).setOnMouseClicked(me -> mouseClickHandler(me));
+                root.getChildren().add((Node) nation);
                 //rs start
-                Nation existsNation = system.getNations().get(nameNoSpace);
-                if (existsNation != null) {
-                    System.out.println("existsNation " + existsNation.getId());
-                    existsNation.addPartOfNation(nation);
-                }
-                else {
-                    System.out.println("newNation " + nation.getId());
-                    system.getNations().put(nameNoSpace, nation);
-                    system.incrementNationCount();
-                }
+                //NationIF existsNation = system.getNations().get(nameNoSpace);
+                //if (existsNation != null) {
+                //    System.out.println("existsNation " + existsNation.getId());
+                //    existsNation.addPartOfNation(nation);
+                //}
+                //else {
+                //    System.out.println("newNation " + nation.getId());
+                //    system.getNations().put(nameNoSpace, nation);
+                //    system.incrementNationCount();
+                //}
             }
             else if(parts[0].equals("capital-of")){
 
@@ -167,7 +184,7 @@ public class Main extends Application {
                 root.getChildren().add(count);
             }
             else if(parts[0].equals("neighbors-of")){
-                Nation nation = system.getNations().get(nameNoSpace);
+                NationIF nation = system.getNations().get(nameNoSpace);
                 List<String> neighbors = new ArrayList<>();
 
                 //":" Symbol überspringen
@@ -359,45 +376,6 @@ public class Main extends Application {
         private void mouseClickHandler(MouseEvent me){
 
         System.out.println("mouse button pressed" + me.getButton());
-
-//        GameState s = GameState.getInstance();
-//original        controller.clickedOnNation(((Node)me.getSource()).getId());
-        //rs start
-        //((Node)me.
-/*        Nation n = (Nation)me.getTarget();
-        for (String value:  n.getNeighbors()) {
-            System.out.println(value);
-            s.getNations().get(value).setOwner(Owner.Player1);
-            System.out.println(s.getContinents());
-        }
-*/
-/*        Nation n = s.getNations().get(((Node)me.getSource()).getId());
-        if (n.isUnOccupied())
-            n.setOwner(Owner.Player1);
-        n = s.getNextUnoccupied();
-        if (n != null)
-            n.setOwner(Owner.Player2);
-*/
-/*        String id = ((Node)me.getSource()).getId();
-        System.out.println(id);
-        ObservableList<Node> ol = ((Node)me.getSource()).getScene().getRoot().getChildrenUnmodifiable();
-        for (int i = 0; i < ol.size()-1; i++){
-            if (ol.get(i).getId().equals(id)) {
-                System.out.println("id " + id + " found" + i + ol.size());
-                //((Path)ol.get(i)).setFill(Owner.Player1.color);
-                //((Path)ol.get(i+1)).setFill(Owner.Player2.color);
-                //p.setFill(Owner.Player1.color);
-                if (s.getNations().get(id).getOwner() == Owner.Player1)
-                    s.getNations().get(id).incrementTruppCounter();
-                ((Nation)ol.get(i)).setFill(Owner.Player1.color);
-               int j = i%2;
-               ((Nation)ol.get(j)).setFill(Owner.Player2.color);
-                break;
-            }
-        }
-        //System.out.println("zzz" + (Path)ol.get(0));
-*/
-
         String id = ((Node)me.getSource()).getId();
         if (me.getButton() == MouseButton.PRIMARY) {
             if (GameState.getInstance().gameProgress == GameState.GameProgress.GameOver){

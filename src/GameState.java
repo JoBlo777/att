@@ -7,16 +7,16 @@ import java.util.*;
 
 public class GameState {
     private static GameState system;
-    public Map<String, Nation> nations;
+    public Map<String, NationClass> nations;
     private Map<String, Continent> continents;
     private boolean isPlayerOnesTurn = true;
     public StringProperty status;
     private int nationCount;
     private int acquiredCount;
     public GameProgress gameProgress;
-    public Nation[] attackNationTuple = new Nation[2];
+    public NationClass[] attackNationTuple = new NationClass[2];
     public int attackNationTupleCount = 0;
-    private HashMap<Owner,ArrayList<Nation>> ownedNationsByPlayer;
+    private HashMap<Owner,ArrayList<NationClass>> ownedNationsByPlayer;
 
     public enum GameProgress {
         Landnahme(Color.BLUE),
@@ -34,7 +34,7 @@ public class GameState {
     private GameState(){
         status = new SimpleStringProperty("Status");
         gameProgress = GameProgress.Landnahme;
-        ownedNationsByPlayer = new HashMap<Owner,ArrayList<Nation>>();
+        ownedNationsByPlayer = new HashMap<Owner,ArrayList<NationClass>>();
         ownedNationsByPlayer.put(Owner.Player1,null);
         ownedNationsByPlayer.put(Owner.Player2,null);
     }
@@ -51,13 +51,13 @@ public class GameState {
         status = new SimpleStringProperty("Status");
         acquiredCount = 0;
         gameProgress = GameProgress.Landnahme;
-        attackNationTuple = new Nation[2];
+        attackNationTuple = new NationClass[2];
         attackNationTupleCount = 0;
-        ownedNationsByPlayer = new HashMap<Owner,ArrayList<Nation>>();
+        ownedNationsByPlayer = new HashMap<Owner,ArrayList<NationClass>>();
         ownedNationsByPlayer.put(Owner.Player1,null);
         ownedNationsByPlayer.put(Owner.Player2,null);
-        Iterator<Nation> i = nations.values().iterator();
-        Nation nation;
+        Iterator<NationClass> i = nations.values().iterator();
+        NationIF nation;
         while (i.hasNext()){
             nation = i.next();
             nation.init();
@@ -73,7 +73,7 @@ public class GameState {
         this.acquiredCount++;
     }
 
-    public void updateNationsOwnedBy(Owner newOwner, Nation nation){
+    public void updateNationsOwnedBy(Owner newOwner, NationClass nation){
         if (nation.getOwner() != null &&
             nation.getOwner().equals(newOwner))
         return;
@@ -83,17 +83,17 @@ public class GameState {
             nation.owner = newOwner;
             newOwner.incrementOwnedNationCount();
             //GameState.getInstance().updateNationsOwnedBy(owner,this);
-            nation.setFill(newOwner.color);
+            nation.fillHelper(newOwner.color);
             // rs end
-            ArrayList<Nation> nations = ownedNationsByPlayer.get(newOwner);
+            ArrayList<NationClass> nations = ownedNationsByPlayer.get(newOwner);
             if (nations == null) {
-                nations = new ArrayList<Nation>();
+                nations = new ArrayList<NationClass>();
             }
             nations.add(nation);
             this.ownedNationsByPlayer.put(newOwner, nations);
         }
         else if (!nation.getOwner().equals(newOwner)){
-            ArrayList<Nation> nations = ownedNationsByPlayer.get(nation.getOwner());
+            ArrayList<NationClass> nations = ownedNationsByPlayer.get(nation.getOwner());
             for (int i = 0; i < nations.size(); i++) {
                 if (nations.get(i).getName().equals(nation.getName())) {
                     nations.remove(i);
@@ -117,7 +117,7 @@ public class GameState {
             oldOwner = Owner.Player1;
 
         if (this.ownedNationsByPlayer.get(newOwner) != null) {
-            ArrayList<Nation> nations = ownedNationsByPlayer.get(newOwner);
+            ArrayList<NationIF> nations = ownedNationsByPlayer.get(newOwner);
             for (int i = 0; i < nations.size(); i++) {
                 if (nations.get(i).getName().equals(nation.getName())) {
                     nations.remove(i);
@@ -128,7 +128,7 @@ public class GameState {
             this.ownedNationsByPlayer.get(newOwner).add(nation);
         }
         else {
-            ArrayList<Nation> nations = new ArrayList<>();
+            ArrayList<NationIF> nations = new ArrayList<>();
             nations.add(nation);
             this.ownedNationsByPlayer.put(newOwner,nations);
         }
@@ -149,7 +149,7 @@ public class GameState {
         if (ownedNationsByPlayer.isEmpty() ||
             ownedNationsByPlayer.containsKey(owner) == false)
             return null;
-        ArrayList<Nation> nations = ownedNationsByPlayer.get(owner);
+        ArrayList<NationClass> nations = ownedNationsByPlayer.get(owner);
         String[] nationsAsString = new String[nations.size()];
         for (int i = 0; i <nations.size(); i++) {
             nationsAsString[i] = nations.get(i).getName();
@@ -164,7 +164,7 @@ public class GameState {
         return (this.nationCount == this.acquiredCount);
     }
 
-    public boolean troopMoveSuccessful (Nation homeland, Nation destinantion, int howMany) {
+    public boolean troopMoveSuccessful (NationClass homeland, NationClass destinantion, int howMany) {
 
         int canBeMoved = homeland.troopCount.getValue() - 1;
 
@@ -187,7 +187,7 @@ public class GameState {
                 ownedNationsByPlayer.get(Owner.Player2).isEmpty());
     }
 
-    public boolean isAttackSuccesful (Nation attacker, Nation defender){
+    public boolean isAttackSuccesful (NationClass attacker, NationClass defender){
         int[]attackerCubes;
         int[]defenderCubes;
 
@@ -324,7 +324,7 @@ public class GameState {
     public int getNationCount(){
         return this.nationCount;
     }
-    public Map<String, Nation> getNations() {
+    public Map<String, NationClass> getNations() {
         if(nations==null) nations = new HashMap<>();
         return nations;
     }
@@ -347,10 +347,10 @@ public class GameState {
         status.setValue(p.toString());
     }
 
-    public Nation getNextUnoccupied() {
-        Iterator<Nation> i = nations.values().iterator();
+    public NationIF getNextUnoccupied() {
+        Iterator<NationClass> i = nations.values().iterator();
         while (i.hasNext()){
-            Nation n = i.next();
+            NationIF n = i.next();
             if (n.isUnOccupied())
                 return n;
         }

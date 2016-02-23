@@ -157,12 +157,12 @@ neighbors-of Kamchatka : Japan
 neighbors-of Siam : Indonesia
 neighbors-of Indonesia : New Guinea
 neighbors-of New Guinea : Eastern Australia - Western Australia
-neighbors-of Eastern Australia : Western Australia
 neighbors-of North Africa : Congo - Egypt - East Africa
-neighbors-of Egypt : East Africa
+neighbors-of Egypt : North Africa - East Africa
 neighbors-of East Africa : Madagascar - Congo - South Africa - Middle East
-neighbors-of Congo : South Africa
-neighbors-of South Africa : Madagascar
+neighbors-of Congo : South Africa - North Africa - East Africa
+neighbors-of South Africa : Congo - East Africa - Madagascar
+neighbors-of Eastern Australia : Western Australia
 continent North America 5 : Alaska - North West Territory - Greenland - Alberta - Ontario - Quebec - Western United States - Eastern United States - Central America
 continent South America 2 : Venezuela - Peru - Brazil - Argentina
 continent Europe 5 : Iceland - Scandinavia - Ukraine - Northern Europe - Southern Europe - Western Europe - Great Britain
