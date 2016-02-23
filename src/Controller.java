@@ -66,6 +66,10 @@ public class Controller {
                 System.out.println("vor angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
                 Nation nation = s.getNations().get(nationID);
                 System.out.println("owner " + nation.getOwner() + "tuplecount " + s.attackNationTupleCount);
+                //reset wenn zweitesmal Angreifer gewählt
+                if (s.attackNationTupleCount == 1 && nation.getOwner() == Owner.Player1)
+                    s.attackNationTupleCount = 0;
+
                 if (s.attackNationTupleCount == 0 && (nation.getOwner() == Owner.Player1)) {
                     s.attackNationTuple[0] = nation;
                     s.attackNationTupleCount++;

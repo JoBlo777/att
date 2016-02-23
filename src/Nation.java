@@ -41,7 +41,7 @@ public class Nation extends Path {
 
     public boolean isNeighbourOf (Nation nation){
         for (String nationId: neighbors){
-            if (nationId.equals(nation.getName()))
+            if (nationId != null && nationId.equals(nation.getName()))
                 return true;
         }
         return false;
@@ -51,6 +51,10 @@ public class Nation extends Path {
     }
     public void incrementTroopCount() {
          this.troopCount.setValue(new Integer(this.getTroopCount().getValue().intValue() + 1));
+    }
+
+    public void setTroopCountInt(int troopCount) {
+        this.troopCount.setValue(troopCount);
     }
 
     public void setTroopCount(IntegerProperty troopCounter) {

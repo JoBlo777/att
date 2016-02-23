@@ -163,8 +163,6 @@ public class GameState {
         return (this.nationCount == this.acquiredCount);
     }
 
-
-
     public boolean troopMoveSuccessful (Nation homeland, Nation destinantion, int howMany) {
 
         int canBeMoved = homeland.troopCount.getValue() - 1;
@@ -248,7 +246,12 @@ public class GameState {
 
         if (attackerCubes.length >= 2 && defenderCubes.length == 1) {
             if (attackerCubes[0] >= defenderCubes[0]) {
-                defender.setTroopCount(attacker.troopCount);
+                int attackingTroops = attackerCubes.length;
+                defender.setTroopCountInt(attackingTroops);
+                while (attackingTroops != 0) {
+                    attacker.decrementTroopCount();
+                    attackingTroops--;
+                }
                 defender.setOwner(attacker.owner);
                 win = true;
             }
@@ -260,7 +263,12 @@ public class GameState {
 
         else if (attackerCubes.length == 1 && defenderCubes.length == 1) {
             if (attackerCubes[0] >= defenderCubes[0]) {
-                defender.setTroopCount(attacker.troopCount);
+                int attackingTroops = attackerCubes.length;
+                defender.setTroopCountInt(attackingTroops);
+                while (attackingTroops != 0) {
+                    attacker.decrementTroopCount();
+                    attackingTroops--;
+                }
                 defender.setOwner(attacker.owner);
                 win = true;
             }
@@ -284,7 +292,12 @@ public class GameState {
             if (attackerCubes[0] >= defenderCubes[0]) {
                 defender.decrementTroopCount();
                 if (attackerCubes[1] >= defenderCubes[1]) {
-                    defender.setTroopCount(attacker.troopCount);
+                    int attackingTroops = attackerCubes.length;
+                    defender.setTroopCountInt(attackingTroops);
+                    while (attackingTroops != 0) {
+                        attacker.decrementTroopCount();
+                        attackingTroops--;
+                    }
                     defender.setOwner(attacker.owner);
                     win = true;
                 } else {
