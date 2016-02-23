@@ -411,6 +411,7 @@ public class Main extends Application {
                         System.out.println("GAMEOVER - EXIT?");
                         GameState.resetGame();
                         Platform.exit();
+                        System.exit(0);
                     }
                 });
                 m.show((Node)me.getSource(), me.getScreenX(), me.getScreenY());
