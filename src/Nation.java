@@ -3,11 +3,15 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.css.Styleable;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Path;
+
+import java.util.ArrayList;
 
 public class Nation extends Path {
     String name;
     String[] neighbors;
+    ArrayList<Nation> partOfNations;
     String continent;
     Owner owner;
     IntegerProperty troopCount;
@@ -29,7 +33,7 @@ public class Nation extends Path {
     public void init(){
         this.owner = Owner.Unowned;
         this.troopCount.setValue(0);
-        this.setFill(owner.color);
+        this.fillHelper(owner.color);
     }
 
     public void setOwner(Owner owner) {
@@ -72,10 +76,20 @@ public class Nation extends Path {
         return neighbors;
     }
 
+    private void fillHelper(Paint p) {
+        for (Nation n: this.partOfNations) {
+            n.setFill(p);
+        }
+    }
     public Owner getOwner() {
         return owner;
     }
-
+    public void addPartOfNation(Nation partOf) {
+        if (this.partOfNations == null){
+            this.partOfNations = new ArrayList<Nation>();
+        }
+        this.partOfNations.add(partOf);
+    }
     public IntegerProperty getTroopCount() {
         return troopCount;
     }

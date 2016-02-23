@@ -61,7 +61,8 @@ public class Main extends Application {
 
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/world.map");
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/africa.map");
-        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
+        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
+        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/world.map");
         BufferedReader br = new BufferedReader(fr);
         String zeile="";
 
@@ -82,7 +83,6 @@ public class Main extends Application {
             nameNoSpace=name.replace(" ","");
 
             if(parts[0].equals("patch-of")){
-
                 Nation nation = new Nation(nameNoSpace);
                 MoveTo moveTo = new MoveTo();
                 moveTo.setX(Double.parseDouble(parts[i]));
@@ -97,6 +97,8 @@ public class Main extends Application {
                     nation.getElements().add(line);
                 }
                 nation.setFill(Owner.Unowned.color);
+                if (nameNoSpace.equals("CentralAmerica"))
+                    nation.setFill(Color.BLACK);
                 nation.setId(nameNoSpace);
 
                 //rs start
@@ -139,9 +141,17 @@ public class Main extends Application {
                 });
                 nation.setOnMouseClicked(me -> mouseClickHandler(me));
                 root.getChildren().add(nation);
-                system.getNations().put(nameNoSpace,nation);
-                system.incrementNationCount();
-
+                //rs start
+                Nation existsNation = system.getNations().get(nameNoSpace);
+                if (existsNation != null) {
+                    System.out.println("existsNation " + existsNation.getId());
+                    existsNation.addPartOfNation(nation);
+                }
+                else {
+                    System.out.println("newNation " + nation.getId());
+                    system.getNations().put(nameNoSpace, nation);
+                    system.incrementNationCount();
+                }
             }
             else if(parts[0].equals("capital-of")){
 

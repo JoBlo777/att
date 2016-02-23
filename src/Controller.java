@@ -23,7 +23,7 @@ public class Controller {
         switch(s.gameProgress) {
             case Landnahme: {
                 System.out.println("LANDNAHME STATE");
-                System.out.println("rrr" + nationID);
+                System.out.println("rrr " + nationID);
                 if (n.isUnOccupied())
                     //s.updateNationsOwnedBy(Owner.Player1, n);
                     n.setOwner(Owner.Player1);

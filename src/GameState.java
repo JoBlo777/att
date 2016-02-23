@@ -133,6 +133,7 @@ public class GameState {
             this.ownedNationsByPlayer.put(newOwner,nations);
         }
         */
+        System.out.println(nation.getElements().size());
         incrementAcquiredCount();
     }
 
