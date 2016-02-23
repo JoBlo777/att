@@ -46,6 +46,29 @@ public class GameState {
         return system;
     }
 
+    private void reset(){
+        isPlayerOnesTurn = true;
+        status = new SimpleStringProperty("Status");
+        acquiredCount = 0;
+        gameProgress = GameProgress.Landnahme;
+        attackNationTuple = new Nation[2];
+        attackNationTupleCount = 0;
+        ownedNationsByPlayer = new HashMap<Owner,ArrayList<Nation>>();
+        ownedNationsByPlayer.put(Owner.Player1,null);
+        ownedNationsByPlayer.put(Owner.Player2,null);
+        Iterator<Nation> i = nations.values().iterator();
+        Nation nation;
+        while (i.hasNext()){
+            nation = i.next();
+            nation.init();
+            nation.getOwner().reset();
+        }
+    }
+
+    public static void resetGame(){
+        system.reset();
+    }
+
     public void incrementAcquiredCount(){
         this.acquiredCount++;
     }
@@ -54,7 +77,7 @@ public class GameState {
         if (nation.getOwner() != null &&
             nation.getOwner().equals(newOwner))
         return;
-        if (nation.getOwner() == null) {
+        if (nation.getOwner() == Owner.Unowned) {
             //rs nation.setOwner(newOwner);
             //rs stat
             nation.owner = newOwner;
@@ -158,6 +181,11 @@ public class GameState {
             return true;
         }
 
+    }
+
+    public boolean isGameOver() {
+        return (ownedNationsByPlayer.get(Owner.Player1).isEmpty() ||
+                ownedNationsByPlayer.get(Owner.Player2).isEmpty());
     }
 
     public boolean isAttackSuccesful (Nation attacker, Nation defender){

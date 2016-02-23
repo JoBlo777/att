@@ -386,9 +386,26 @@ public class Main extends Application {
         }
         //System.out.println("zzz" + (Path)ol.get(0));
 */
+
         String id = ((Node)me.getSource()).getId();
-        if (me.getButton() == MouseButton.PRIMARY)
+        if (me.getButton() == MouseButton.PRIMARY) {
+            if (GameState.getInstance().gameProgress == GameState.GameProgress.GameOver){
+                System.out.println("GAMEOVER");
+                MenuItem i = new MenuItem("GAMEOVER - Would you like to FIGHT again?");
+                i.setDisable(false);
+                ContextMenu m = new ContextMenu(i);
+                //controller.incrementTroopsOnNation(id);
+                m.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e) {
+                        System.out.println("GAMEOVER - Would you like to FIGHT again?");
+                        GameState.resetGame();
+                    }
+                });
+                m.show((Node)me.getSource(), me.getScreenX(), me.getScreenY());
+                return;
+            }
             controller.clickedOnNation(id);
+        }
         else if (me.getButton() == MouseButton.SECONDARY) {
             MenuItem i = new MenuItem("add troops by 1");
             i.setDisable(false);

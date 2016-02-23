@@ -23,6 +23,10 @@ public enum Owner {
     public void incrementOwnedNationCount(){
         this.nationCount++;
     }
+    public void reset(){
+        nationCount = 0;
+        bonus = 0;
+    }
 
     public int getOwnedNationCount(){
         return this.nationCount;

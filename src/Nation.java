@@ -2,6 +2,7 @@
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.css.Styleable;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 
 public class Nation extends Path {
@@ -13,7 +14,8 @@ public class Nation extends Path {
 
     public Nation(String name) {
         this.name = name;
-        troopCount = new SimpleIntegerProperty(0);
+        this.owner = Owner.Unowned;
+        this.troopCount = new SimpleIntegerProperty(0);
     }
 
     public void setNeighbors(String[] neighbors) {
@@ -22,6 +24,12 @@ public class Nation extends Path {
 
     public void setContinent(String continent) {
         this.continent = continent;
+    }
+
+    public void init(){
+        this.owner = Owner.Unowned;
+        this.troopCount.setValue(0);
+        this.setFill(owner.color);
     }
 
     public void setOwner(Owner owner) {
@@ -46,10 +54,10 @@ public class Nation extends Path {
     }
 
     public void setTroopCount(IntegerProperty troopCounter) {
-        this.troopCount = troopCounter;
+        this.troopCount.setValue(troopCounter.getValue().intValue());
     }
     public boolean isUnOccupied(){
-        return (owner == null);
+        return (owner == Owner.Unowned);
     }
 
     public String getName() {

@@ -14,13 +14,13 @@ public class Controller {
             s.getNations().get(nationID).incrementTroopCount();
     }
 
-
     public void clickedOnNation(String nationID){
         GameState s = GameState.getInstance();
         Nation n = s.getNations().get(nationID);
 
         switch(s.gameProgress) {
             case Landnahme: {
+                System.out.println("LANDNAHME STATE");
                 System.out.println("rrr" + nationID);
                 if (n.isUnOccupied())
                     //s.updateNationsOwnedBy(Owner.Player1, n);
@@ -34,7 +34,7 @@ public class Controller {
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
-                System.out.println(s.getAcquiredCount());
+                System.out.println("clicked count " + s.getAcquiredCount());
                 if (s.allClicked())
  //test                   s.gameProgress = GameState.GameProgress.Verstärkung;
                 s.gameProgress = GameState.GameProgress.Angreifen; // test
@@ -52,16 +52,20 @@ public class Controller {
                 //       }
             }
              case Verstärkung: {
-
+                 System.out.println("VERSTÄRKUNG STATE");
                 break;
             }
             case Bewegen: {
+                System.out.println("BEWEGEN STATE");
+
                 break;
             }
             case Angreifen: {
+                System.out.println("ANGREIFEN STATE");
                 System.out.println("vor angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
                 System.out.println("vor angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
                 Nation nation = s.getNations().get(nationID);
+                System.out.println("owner " + nation.getOwner() + "tuplecount " + s.attackNationTupleCount);
                 if (s.attackNationTupleCount == 0 && (nation.getOwner() == Owner.Player1)) {
                     s.attackNationTuple[0] = nation;
                     s.attackNationTupleCount++;
@@ -87,17 +91,19 @@ public class Controller {
                     System.out.println("nach angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
                     System.out.println("nach angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
                     s.attackNationTupleCount = 0;
-
                     // Player2 turn AI
-
                 }
+                if (s.isGameOver())
+                    s.gameProgress = GameState.GameProgress.GameOver;
                 // if all nations owned by either Player1 or Player2 set s.gameProgress = GameState.GameProgress.GameOver;
                 break;
             }
             case GameOver: {
+                System.out.println("GAMEOVE RSTATE");
                 break;
             }
             default:{
+                System.out.println("DEFAULTERSTATE");
                 break;
             }
         }
