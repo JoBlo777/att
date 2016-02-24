@@ -14,6 +14,21 @@ public class Continent {
         }
     }
 
+    public void ownesWholeContinent(){
+        int count = 0;
+        GameState s = GameState.getInstance();
+        Owner o = null;
+        for (String nation: nations) {
+            o = s.getNations().get(nation).owner;
+            if (o != null && o == Owner.Player1)
+                count++;
+            if (count == nations.length) {
+                ownedBy = o;
+                s.getNations().get(nation).owner.setBonus(this.addValue);
+            }
+        }
+    }
+
     public String getName() {
         return name;
     }

@@ -9,6 +9,7 @@ public enum Owner {
 
     private int bonus = 0;
     private int nationCount = 0;
+    private int amountReinforcement = 0;
 
     Paint color;
     Owner(Paint color){
@@ -35,7 +36,15 @@ public enum Owner {
     public void setBonus(int bonus){
     this.bonus = bonus;
 }
-public int getBonus(){
+    public int getBonus(){
         return this.bonus;
     }
+
+    public void setAmountReinforcement(){
+        this.amountReinforcement = this.nationCount/3 + bonus;
+    }
+    public int getAmountReinforcement(){
+        return this.amountReinforcement;
+    }
+
 }

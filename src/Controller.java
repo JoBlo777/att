@@ -65,7 +65,7 @@ public class Controller {
                 System.out.println("vor angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
                 NationClass nation = (NationClass) s.getNations().get(nationID);
                 System.out.println("owner " + nation.getOwner() + "tuplecount " + s.attackNationTupleCount);
-                //reset wenn zweitesmal Angreifer gewählt
+                //reset wenn zweites mal Angreifer gewählt
                 if (s.attackNationTupleCount == 1 && nation.getOwner() == Owner.Player1)
                     s.attackNationTupleCount = 0;
 
@@ -75,7 +75,7 @@ public class Controller {
                 }
                 else if (s.attackNationTupleCount == 1 && // let's attack Attacker und Defender gesetzt
                         (nation.getOwner() == Owner.Player2)
-                        /* rs && s.attackNationTuple[0].isNeighbourOf(nation) */) {
+                        /* && s.attackNationTuple[0].isNeighbourOf(nation)*/) {
                     s.attackNationTupleCount++;
                     s.attackNationTuple[1] = nation;
                     if (s.isAttackSuccesful(s.attackNationTuple[0], s.attackNationTuple[1])) {
@@ -143,11 +143,11 @@ public class Controller {
                 break;
             }
             case GameOver: {
-                System.out.println("GAMEOVE RSTATE");
+                System.out.println("GAME-OVER RSTATE");
                 break;
             }
             default:{
-                System.out.println("DEFAULTERSTATE");
+                System.out.println("DEFAULT STATE");
                 break;
             }
         }
