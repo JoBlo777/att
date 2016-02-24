@@ -20,6 +20,7 @@ public class GameState {
     public int bewegenVonNachTupleCount = 0;
 
     private HashMap<Owner, ArrayList<NationClass>> ownedNationsByPlayer;
+    protected HashMap<Owner, ArrayList<Continent>> ownedContinentsByPlayer;
 
     public enum GameProgress {
         Landnahme(Color.BLUE),
