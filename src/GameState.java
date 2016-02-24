@@ -42,6 +42,7 @@ public class GameState {
         ownedNationsByPlayer = new HashMap<Owner, ArrayList<NationClass>>();
         ownedNationsByPlayer.put(Owner.Player1, null);
         ownedNationsByPlayer.put(Owner.Player2, null);
+        ownedContinentsByPlayer = new HashMap<Owner, ArrayList<Continent>>();
     }
 
     public static GameState getInstance() {
@@ -86,6 +87,7 @@ public class GameState {
         System.out.println(" Owner.Player2 bonus " + Owner.Player2.getBonus());
         System.out.println(" Owner.Player1 reinforcement " + Owner.Player1.getAmountReinforcement());
         System.out.println(" Owner.Player2 reinforcement " + Owner.Player2.getAmountReinforcement());
+        System.out.println(" Owner.Player2 owned continents size " + ownedContinentsByPlayer.get(Owner.Player2).size());
     }
     public static void resetGame() {
         system.reset();
