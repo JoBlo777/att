@@ -61,8 +61,8 @@ public class Main extends Application {
 
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/world.map");
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/africa.map");
-        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
-        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/world.map");
+        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
+        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/world.map");
         BufferedReader br = new BufferedReader(fr);
         String zeile="";
 
@@ -226,6 +226,7 @@ public class Main extends Application {
         status.textProperty().bind(system.statusProperty());
         status.setLayoutX(400);
         status.setLayoutY(600);
+        system.status.setValue("Landnahme");
         root.getChildren().add(status);
         System.out.println("RS" + Nations.toString()); //rfs
         System.out.println("nationcount " + system.getNationCount()); //rfs
@@ -397,7 +398,6 @@ public class Main extends Application {
                 i2.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent e) {
                         System.out.println("GAMEOVER - EXIT?");
-                        GameState.resetGame();
                         Platform.exit();
                         System.exit(0);
                     }

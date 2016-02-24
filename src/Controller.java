@@ -20,6 +20,7 @@ public class Controller {
 
         switch(s.gameProgress) {
             case Landnahme: {
+                s.status.setValue("Landnahme");
                 System.out.println("LANDNAHME STATE");
                 System.out.println("rrr " + nationID);
                 if (n.isUnOccupied())
@@ -33,11 +34,12 @@ public class Controller {
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
-                System.out.println("acquired count " + s.getAcquiredCount());
-                if (s.allClicked())
- //test                   s.gameProgress = GameState.GameProgress.Verstärkung;
-                s.gameProgress = GameState.GameProgress.Angreifen; // test
-
+                System.out.println("clicked count " + s.getAcquiredCount());
+                if (s.allClicked()) {
+                    //test                   s.gameProgress = GameState.GameProgress.Verstärkung;
+                    s.gameProgress = GameState.GameProgress.Angreifen;
+                    s.status.setValue("Angreifen");
+                }
                 s.assignContinentBonus(nationID);
 
                 //       if (s.isPlayerOnesTurn()) {
@@ -56,7 +58,31 @@ public class Controller {
             }
             case Bewegen: {
                 System.out.println("BEWEGEN STATE");
+                NationClass nation = (NationClass) s.getNations().get(nationID);
+                System.out.println("owner " + nation.getOwner() + " tuplecount = " + s.bewegenVonNachTupleCount);
+                //reset wenn zweites mal Angreifer gewählt
+//                if (s.bewegenVonNachTupleCount == 1 && nation.getOwner() == Owner.Player1)
+//                    s.bewegenVonNachTupleCount = 0;
 
+                if (s.bewegenVonNachTupleCount == 0 && (nation.getOwner() == Owner.Player1)) {
+                    s.bewegenVonNachTuple[0] = nation;
+                    s.bewegenVonNachTupleCount++;
+                } else if (s.bewegenVonNachTupleCount == 1)
+                        /* && s.attackNationTuple[0].isNeighbourOf(nation))*/ {
+                    s.bewegenVonNachTupleCount++;
+                    s.bewegenVonNachTuple[1] = nation;
+                    System.out.println("VOR VERSCHIEBEN NACH troop count = " + s.bewegenVonNachTuple[1].getTroopCount());
+                    if (s.troopMoveSuccessful (s.bewegenVonNachTuple[0], s.bewegenVonNachTuple[1], s.bewegenVonNachTuple[0].getTroopCount().intValue()-1)) {
+                        System.out.println("NACH VERSCHIEBEN country count = " + s.bewegenVonNachTuple[1].getTroopCount());
+                     } else {
+                        System.out.println("NICHT VERSCHOBEN");
+                   }
+                }
+                if (s.bewegenVonNachTupleCount > 1) {
+                    s.bewegenVonNachTupleCount = 0;
+                    s.gameProgress = GameState.GameProgress.Angreifen;
+                    s.status.setValue("Angreifen");
+                }
                 break;
             }
             case Angreifen: {
@@ -134,19 +160,22 @@ public class Controller {
                                 System.out.println("nach angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
                                 System.out.println("nach angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
                                 s.attackNationTupleCount = 0;
+                                s.gameProgress = GameState.GameProgress.Bewegen;
+                                s.status.setValue("Bewegen");
                                 cont = false;
                             }
                         }
                     }
                 }
-
                 break;
             }
             case GameOver: {
+                s.status.setValue("Game Over");
                 System.out.println("GAME-OVER RSTATE");
                 break;
             }
             default:{
+                s.status.setValue("Default");
                 System.out.println("DEFAULT STATE");
                 break;
             }

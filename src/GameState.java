@@ -16,6 +16,9 @@ public class GameState {
     public GameProgress gameProgress;
     public NationClass[] attackNationTuple = new NationClass[2];
     public int attackNationTupleCount = 0;
+    public NationClass[] bewegenVonNachTuple = new NationClass[2];
+    public int bewegenVonNachTupleCount = 0;
+
     private HashMap<Owner,ArrayList<NationClass>> ownedNationsByPlayer;
 
     public enum GameProgress {
@@ -62,6 +65,7 @@ public class GameState {
             nation = i.next();
             nation.init();
             nation.getOwner().reset();
+            nation.setTroopCountInt(1);
         }
     }
 
