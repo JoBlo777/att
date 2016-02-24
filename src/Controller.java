@@ -30,7 +30,7 @@ public class Controller {
                 if (n != null) {
                     //s.updateNationsOwnedBy(Owner.Player2, n);
                     n.setOwner(Owner.Player2);
-                    n.setTroopCountInt(4);  // damit er was zum verteidugen hat
+                    // n.setTroopCountInt(4);
                 }
 //        Continent c = s.getContinents().get(n.name);
 //        c.setOwner();
@@ -41,6 +41,7 @@ public class Controller {
                     s.status.setValue("Angreifen");
                     // recalculate Continent and Nation bases boni
                     s.assignReinforcements();
+                    s.distributeReinforcements();
                 }
                 //s.assignContinentBonus(nationID);
 

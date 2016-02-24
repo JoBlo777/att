@@ -35,6 +35,10 @@ public enum Owner {
         bonus = 0;
     }
 
+    public void decrementOwnedReinforcements(){
+        this.amountReinforcement--;
+    }
+
     public int getOwnedNationCount(){
         return nationCount;
     }

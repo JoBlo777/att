@@ -72,6 +72,32 @@ public class GameState {
         }
     }
 
+    public void distributeReinforcements(){
+        ArrayList<NationClass> nlist = ownedNationsByPlayer.get(Owner.Player1);
+        Iterator<NationClass> i = nlist.iterator();
+        NationClass n = null;
+        while (i.hasNext() && Owner.Player1.getAmountReinforcement() > 0){
+            n = i.next();
+            n.setTroopCountInt(1);
+            Owner.Player1.decrementOwnedReinforcements();
+        }
+        nlist = ownedNationsByPlayer.get(Owner.Player2);
+        i = nlist.iterator();
+        while (i.hasNext() && Owner.Player2.getAmountReinforcement() > 0){
+            n = i.next();
+            n.setTroopCountInt(1);
+            Owner.Player2.decrementOwnedReinforcements();
+        }
+        System.out.println(" Owner.Player1 nations " + Owner.Player1.getOwnedNationCount());
+        System.out.println(" Owner.Player2 nations " + Owner.Player2.getOwnedNationCount());
+        System.out.println(" Owner.Player1 bonus " + Owner.Player1.getBonus());
+        System.out.println(" Owner.Player2 bonus " + Owner.Player2.getBonus());
+        System.out.println(" Owner.Player1 reinforcement " + Owner.Player1.getAmountReinforcement());
+        System.out.println(" Owner.Player2 reinforcement " + Owner.Player2.getAmountReinforcement());
+        System.out.println(" Owner.Player1 owned continents size " + ownedContinentsByPlayer.get(Owner.Player1).size());
+        System.out.println(" Owner.Player2 owned continents size " + ownedContinentsByPlayer.get(Owner.Player2).size());
+
+    }
     public void assignReinforcements() {
         Iterator<Continent> itr = continents.values().iterator();
         Continent c;
@@ -87,6 +113,7 @@ public class GameState {
         System.out.println(" Owner.Player2 bonus " + Owner.Player2.getBonus());
         System.out.println(" Owner.Player1 reinforcement " + Owner.Player1.getAmountReinforcement());
         System.out.println(" Owner.Player2 reinforcement " + Owner.Player2.getAmountReinforcement());
+        System.out.println(" Owner.Player1 owned continents size " + ownedContinentsByPlayer.get(Owner.Player1).size());
         System.out.println(" Owner.Player2 owned continents size " + ownedContinentsByPlayer.get(Owner.Player2).size());
     }
     public static void resetGame() {

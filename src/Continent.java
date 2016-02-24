@@ -61,8 +61,8 @@ public class Continent {
                 if (o == Owner.Player2)
                     countO2++;
             }
+            ArrayList<Continent> carr;
             if (countO2 == nations.length) {
-                ArrayList<Continent> carr;
                 ownedBy = Owner.Player2;
                 ownedBy.setBonus(this.getAddValue());
                 if (s.ownedContinentsByPlayer.containsKey(Owner.Player2)) {
@@ -88,6 +88,24 @@ public class Continent {
             else if (countO1 == nations.length) {
                 ownedBy = Owner.Player1;
                 ownedBy.setBonus(this.getAddValue());
+                if (s.ownedContinentsByPlayer.containsKey(Owner.Player1)) {
+                    carr = s.ownedContinentsByPlayer.get(Owner.Player1);
+                    Iterator<Continent> citr = carr.iterator();
+                    Continent c = null;
+                    while (!cfound && citr.hasNext()) {
+                        c = citr.next();
+                        if (c.equals(this)) {
+                            cfound = true;
+                        }
+                    }
+                    if (!cfound)
+                        carr.add(c);
+                }
+                else {
+                    carr = new ArrayList<Continent>();
+                    carr.add(this);
+                    s.ownedContinentsByPlayer.put(Owner.Player1, carr);
+                }
                 System.out.println(ownedBy.getBonus());
             }
         }
