@@ -103,7 +103,7 @@ public class GameState {
                     nation.owner = newOwner;
                     newOwner.incrementOwnedNationCount();
                     //GameState.getInstance().updateNationsOwnedBy(owner,this);
-                    nation.setFill(newOwner.color);
+                    nation.fillHelper(newOwner.color);
                     // rs end
                     break;
                 }
