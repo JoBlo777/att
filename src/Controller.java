@@ -1,5 +1,6 @@
 import javafx.scene.shape.Path;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Controller {
@@ -78,7 +79,7 @@ public class Controller {
                     s.attackNationTupleCount++;
                     s.attackNationTuple[1] = nation;
                     if (s.isAttackSuccesful(s.attackNationTuple[0], s.attackNationTuple[1])) {
-                        System.out.println("CONQUERED");
+                        System.out.println("CONQUERED country" + s.attackNationTuple[1].getId());
                         //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[0]);
                         //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[1]);
                         //s.attackNationTuple[0].setOwner(Owner.Player1);
@@ -98,23 +99,28 @@ public class Controller {
                 if (s.isGameOver()) {
                     s.gameProgress = GameState.GameProgress.GameOver;
                 }
-                if (s.attackNationTupleCount > 1) { //AI = Player2
+                //AI = Player2
+                if (s.attackNationTupleCount > 1) {
                     System.out.println("AI " + s.attackNationTupleCount);
                     boolean cont = true;
                     for (String id: s.getNationsOwnedBy(Owner.Player1)){
                         if (!cont)
                             break;
-                        Iterator<NationClass> i = s.nations.values().iterator();
+                        //Iterator<NationClass> i = s.nations.values().iterator();
+                        ArrayList<NationClass> list = s.getNationsOwnedByB(Owner.Player2);
+                        Iterator<NationClass> i = list.iterator();
                         while (cont && i.hasNext()){
                             nation = i.next();
                             if (s.nations.get(id).isNeighbourOf(nation)){
                                 System.out.println("match");
-                                System.out.println("attacker id"  + ((Path)nation).getId() + " attacker owner " + nation.getOwner());
-                                System.out.println("defender id"  + s.nations.get(id) + " defender owner " + s.nations.get(id).getOwner());
+                                System.out.println("attacker id"  + ((Path)nation).getId() + " attacker owner " + nation.getOwner()
+                                        + " attacker troop count " + nation.getTroopCount());
+                                System.out.println("defender id "  + ((Path)s.nations.get(id)) + " defender owner " + s.nations.get(id).getOwner()
+                                        + " defender troop count " + s.nations.get(id).getTroopCount());
                                 if (s.isAttackSuccesful(nation, s.nations.get(id))) {
-                                    System.out.println("AI CONQUERED");
+                                    System.out.println("AI CONQUERED country " + s.nations.get(id));
                                     //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[0]);
-                                    //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[1]);
+                                    //s.updateNationsOwnedBy(Owner.Player2, s.attackNationTuple[1]);
                                     //s.attackNationTuple[0].setOwner(Owner.Player1);
                                     //s.attackNationTuple[1].setOwner(Owner.Player1);
                                 } else {

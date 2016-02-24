@@ -145,6 +145,13 @@ public class GameState {
         }
         return o;
     }
+
+    public ArrayList<NationClass> getNationsOwnedByB(Owner owner){
+        if (ownedNationsByPlayer.isEmpty() ||
+                ownedNationsByPlayer.containsKey(owner) == false)
+            return null;
+        return ownedNationsByPlayer.get(owner);
+    }
     public String[] getNationsOwnedBy(Owner owner){
         if (ownedNationsByPlayer.isEmpty() ||
             ownedNationsByPlayer.containsKey(owner) == false)

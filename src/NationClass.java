@@ -17,7 +17,7 @@ public class NationClass extends Path implements NationIF {
     public NationClass(String name) {
         this.name = name;
         this.owner = Owner.Unowned;
-        this.troopCount = new SimpleIntegerProperty(0);
+        this.troopCount = new SimpleIntegerProperty(1);
     }
     //@Override
     public void setNeighbors(String[] neighbors) {

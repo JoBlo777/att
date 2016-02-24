@@ -106,8 +106,8 @@ public class Main extends Application {
                     ((Path)nation).getElements().add(line);
                 }
                 ((Path)nation).setFill(Owner.Unowned.color);
-                if (nameNoSpace.equals("NorthWestTerritory"))
-                    ((Path)nation).setFill(Color.BLACK);
+                //test if (nameNoSpace.equals("NorthWestTerritory"))
+                //    ((Path)nation).setFill(Color.BLACK);
                 ((Path)nation).setId(nameNoSpace);
                 if (childNation) {
                     System.out.println("existsNation " + ((Path)nation).getId());
