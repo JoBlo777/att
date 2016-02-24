@@ -39,8 +39,10 @@ public class Controller {
                     //test                   s.gameProgress = GameState.GameProgress.Verstärkung;
                     s.gameProgress = GameState.GameProgress.Angreifen;
                     s.status.setValue("Angreifen");
+                    // recalculate Continent and Nation bases boni
+                    s.assignReinforcements();
                 }
-                s.assignContinentBonus(nationID);
+                //s.assignContinentBonus(nationID);
 
                 //       if (s.isPlayerOnesTurn()) {
                 //           s.setPlayerOnesTurn(false);

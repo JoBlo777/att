@@ -2,7 +2,7 @@ public class Continent {
     String name;
     int addValue;
     String[] nations;
-    Owner ownedBy = null;
+    Owner ownedBy = Owner.Unowned;
 
     public Continent(String name, int addValue, String[] nations) {
         this.name = name;
@@ -14,7 +14,7 @@ public class Continent {
         }
     }
 
-    public void ownesWholeContinent(){
+/*    public void ownsWholeContinent(){
         int count = 0;
         GameState s = GameState.getInstance();
         Owner o = null;
@@ -28,7 +28,7 @@ public class Continent {
             }
         }
     }
-
+*/
     public String getName() {
         return name;
     }
@@ -41,21 +41,40 @@ public class Continent {
         return nations;
     }
 
-    public void setOwner(){
-        int count = 0;
-        GameState s = GameState.getInstance();
-        Owner o = null;
-        for (String nation: nations) {
-            o = s.getNations().get(nation).owner;
-            if (o != null && o == Owner.Player1)
-                count++;
-        }
-        if (count == nations.length)
-            ownedBy = o;
-    }
+    public void setOwner() {
+        int countO1 = 0;
+        int countO2 = 0;
 
+        GameState s = GameState.getInstance();
+
+        Owner o;
+
+        for (String nation : nations) {
+            o = s.getNations().get(nation).owner;
+            if (o != null) {
+                if (o == Owner.Player1)
+                    countO1++;
+                if (o == Owner.Player2)
+                    countO2++;
+            }
+            if (countO2 == nations.length) {
+                ownedBy = Owner.Player2;
+                ownedBy.setBonus(this.getAddValue());
+                System.out.println(ownedBy.getBonus());
+            }
+            else if (countO1 == nations.length) {
+                ownedBy = Owner.Player1;
+                ownedBy.setBonus(this.getAddValue());
+                System.out.println(ownedBy.getBonus());
+            }
+        }
+    }
     public boolean ownedByPlayer(Owner owner) {
         return (owner != null && owner.equals(this.ownedBy));
+    }
+
+    public Owner getOwner() {
+        return ownedBy;
     }
 
     public boolean containsNation(String nation){

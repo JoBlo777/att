@@ -51,7 +51,7 @@ public class Main extends Application {
         bp.setCenter(appContent);
         bp.setBottom(statusbar);
 
-        bp.setRight(new Text("RIGHT SIDEBAR - CONTROLS"));
+        bp.setRight(new Label("RIGHT SIDEBAR - CONTROLS"));
         bp.setLeft(new Text("LEFT SIDEBAR - CONTROLS"));
         bp.setCenter(new Text("LET´S PLAY!"));
         bp.setCenter(root);
@@ -61,8 +61,8 @@ public class Main extends Application {
 
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/world.map");
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/africa.map");
-        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
-        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/world.map");
+        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
+        FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/world.map");
         BufferedReader br = new BufferedReader(fr);
         String zeile="";
 

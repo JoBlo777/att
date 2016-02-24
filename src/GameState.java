@@ -19,7 +19,7 @@ public class GameState {
     public NationClass[] bewegenVonNachTuple = new NationClass[2];
     public int bewegenVonNachTupleCount = 0;
 
-    private HashMap<Owner,ArrayList<NationClass>> ownedNationsByPlayer;
+    private HashMap<Owner, ArrayList<NationClass>> ownedNationsByPlayer;
 
     public enum GameProgress {
         Landnahme(Color.BLUE),
@@ -29,39 +29,40 @@ public class GameState {
         GameOver(Color.YELLOW);
 
         Paint color;
-        GameProgress(Paint color){
-            this.color=color;
+
+        GameProgress(Paint color) {
+            this.color = color;
         }
     }
 
-    private GameState(){
+    private GameState() {
         status = new SimpleStringProperty("Status");
         gameProgress = GameProgress.Landnahme;
-        ownedNationsByPlayer = new HashMap<Owner,ArrayList<NationClass>>();
-        ownedNationsByPlayer.put(Owner.Player1,null);
-        ownedNationsByPlayer.put(Owner.Player2,null);
+        ownedNationsByPlayer = new HashMap<Owner, ArrayList<NationClass>>();
+        ownedNationsByPlayer.put(Owner.Player1, null);
+        ownedNationsByPlayer.put(Owner.Player2, null);
     }
 
-    public static GameState getInstance(){
-        if(system==null){
-            system=new GameState();
+    public static GameState getInstance() {
+        if (system == null) {
+            system = new GameState();
         }
         return system;
     }
 
-    private void reset(){
+    private void reset() {
         isPlayerOnesTurn = true;
         status = new SimpleStringProperty("Status");
         acquiredCount = 0;
         gameProgress = GameProgress.Landnahme;
         attackNationTuple = new NationClass[2];
         attackNationTupleCount = 0;
-        ownedNationsByPlayer = new HashMap<Owner,ArrayList<NationClass>>();
-        ownedNationsByPlayer.put(Owner.Player1,null);
-        ownedNationsByPlayer.put(Owner.Player2,null);
+        ownedNationsByPlayer = new HashMap<Owner, ArrayList<NationClass>>();
+        ownedNationsByPlayer.put(Owner.Player1, null);
+        ownedNationsByPlayer.put(Owner.Player2, null);
         Iterator<NationClass> i = nations.values().iterator();
         NationIF nation;
-        while (i.hasNext()){
+        while (i.hasNext()) {
             nation = i.next();
             nation.init();
             nation.getOwner().reset();
@@ -69,18 +70,34 @@ public class GameState {
         }
     }
 
-    public static void resetGame(){
+    public void assignReinforcements() {
+        Iterator<Continent> itr = continents.values().iterator();
+        Continent c;
+        while (itr.hasNext()) {
+            c = itr.next();
+            c.setOwner();
+        }
+        Owner.Player1.setAmountReinforcement();
+        Owner.Player2.setAmountReinforcement();
+        System.out.println(" Owner.Player1 nations " + Owner.Player1.getOwnedNationCount());
+        System.out.println(" Owner.Player2 nations " + Owner.Player2.getOwnedNationCount());
+        System.out.println(" Owner.Player1 bonus " + Owner.Player1.getBonus());
+        System.out.println(" Owner.Player2 bonus " + Owner.Player2.getBonus());
+        System.out.println(" Owner.Player1 reinforcement " + Owner.Player1.getAmountReinforcement());
+        System.out.println(" Owner.Player2 reinforcement " + Owner.Player2.getAmountReinforcement());
+    }
+    public static void resetGame() {
         system.reset();
     }
 
-    public void incrementAcquiredCount(){
+    public void incrementAcquiredCount() {
         this.acquiredCount++;
     }
 
-    public void updateNationsOwnedBy(Owner newOwner, NationClass nation){
+    public void updateNationsOwnedBy(Owner newOwner, NationClass nation) {
         if (nation.getOwner() != null &&
-            nation.getOwner().equals(newOwner))
-        return;
+                nation.getOwner().equals(newOwner))
+            return;
         if (nation.getOwner() == Owner.Unowned) {
             //rs nation.setOwner(newOwner);
             //rs stat
@@ -95,8 +112,7 @@ public class GameState {
             }
             nations.add(nation);
             this.ownedNationsByPlayer.put(newOwner, nations);
-        }
-        else if (!nation.getOwner().equals(newOwner)){
+        } else if (!nation.getOwner().equals(newOwner)) {
             ArrayList<NationClass> nations = ownedNationsByPlayer.get(nation.getOwner());
             for (int i = 0; i < nations.size(); i++) {
                 if (nations.get(i).getName().equals(nation.getName())) {
@@ -141,48 +157,49 @@ public class GameState {
         incrementAcquiredCount();
     }
 
-    public String printNationsOwnedBy(Owner owner){
+    public String printNationsOwnedBy(Owner owner) {
         String o = "";
         String[] s = getNationsOwnedBy(owner);
-        for (String value: s) {
+        for (String value : s) {
             o += " " + value;
         }
         return o;
     }
 
-    public ArrayList<NationClass> getNationsOwnedByB(Owner owner){
+    public ArrayList<NationClass> getNationsOwnedByB(Owner owner) {
         if (ownedNationsByPlayer.isEmpty() ||
                 ownedNationsByPlayer.containsKey(owner) == false)
             return null;
         return ownedNationsByPlayer.get(owner);
     }
-    public String[] getNationsOwnedBy(Owner owner){
+
+    public String[] getNationsOwnedBy(Owner owner) {
         if (ownedNationsByPlayer.isEmpty() ||
-            ownedNationsByPlayer.containsKey(owner) == false)
+                ownedNationsByPlayer.containsKey(owner) == false)
             return null;
         ArrayList<NationClass> nations = ownedNationsByPlayer.get(owner);
         String[] nationsAsString = new String[nations.size()];
-        for (int i = 0; i <nations.size(); i++) {
+        for (int i = 0; i < nations.size(); i++) {
             nationsAsString[i] = nations.get(i).getName();
         }
         return nationsAsString;
     }
-    public void incrementNationCount(){
+
+    public void incrementNationCount() {
         this.nationCount++;
     }
 
-    public boolean allClicked(){
+    public boolean allClicked() {
         return (this.nationCount == this.acquiredCount);
     }
 
-    public boolean troopMoveSuccessful (NationClass homeland, NationClass destinantion, int howMany) {
+    public boolean troopMoveSuccessful(NationClass homeland, NationClass destinantion, int howMany) {
 
         int canBeMoved = homeland.troopCount.getValue() - 1;
 
         if (howMany > canBeMoved) {
             return false;
-        }
-        else {
+        } else {
             while (howMany != 0) {
                 homeland.decrementTroopCount();
                 destinantion.incrementTroopCount();
@@ -198,29 +215,26 @@ public class GameState {
                 ownedNationsByPlayer.get(Owner.Player2).isEmpty());
     }
 
-    public boolean isAttackSuccesful (NationClass attacker, NationClass defender){
-        int[]attackerCubes;
-        int[]defenderCubes;
+    public boolean isAttackSuccesful(NationClass attacker, NationClass defender) {
+        int[] attackerCubes;
+        int[] defenderCubes;
 
 
-//Abchecken wieviele Armeen angreifen können, es wird immer das Maximum hergenommen, dann wird ein Array mit Würfelzahlen erstellt
+//Abchecken wieviele Armeen angreifen k�nnen, es wird immer das Maximum hergenommen, dann wird ein Array mit W�rfelzahlen erstellt
         if (attacker.troopCount.getValue() > 3) {
             int dice1 = (int) (Math.random() * 5 + 1);
             int dice2 = (int) (Math.random() * 5 + 1);
             int dice3 = (int) (Math.random() * 5 + 1);
 
             attackerCubes = new int[]{dice1, dice2, dice3};
-        }
-        else if (attacker.troopCount.getValue() == 3) {
+        } else if (attacker.troopCount.getValue() == 3) {
             int dice1 = (int) (Math.random() * 5 + 1);
             int dice2 = (int) (Math.random() * 5 + 1);
             attackerCubes = new int[]{dice1, dice2};
-        }
-        else if (attacker.troopCount.getValue() == 2) {
+        } else if (attacker.troopCount.getValue() == 2) {
             int dice1 = (int) (Math.random() * 5 + 1);
             attackerCubes = new int[]{dice1};
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -229,8 +243,7 @@ public class GameState {
             int dice2 = (int) (Math.random() * 5 + 1);
 
             defenderCubes = new int[]{dice1, dice2};
-        }
-        else {
+        } else {
             int dice1 = (int) (Math.random() * 5 + 1);
 
             defenderCubes = new int[]{dice1};
@@ -253,7 +266,7 @@ public class GameState {
         }
 
 
-//die höchsten beiden Würfelzahlen werden verglichen, es wird festgestellt, ob der Angriff erfolgreich war oder nicht
+//die h�chsten beiden W�rfelzahlen werden verglichen, es wird festgestellt, ob der Angriff erfolgreich war oder nicht
         boolean win;
 
         if (attackerCubes.length >= 2 && defenderCubes.length == 1) {
@@ -266,14 +279,11 @@ public class GameState {
                 }
                 defender.setOwner(attacker.owner);
                 win = true;
-            }
-            else {
+            } else {
                 attacker.decrementTroopCount();
                 win = false;
             }
-        }
-
-        else if (attackerCubes.length == 1 && defenderCubes.length == 1) {
+        } else if (attackerCubes.length == 1 && defenderCubes.length == 1) {
             if (attackerCubes[0] >= defenderCubes[0]) {
                 int attackingTroops = attackerCubes.length;
                 defender.setTroopCountInt(attackingTroops);
@@ -283,14 +293,11 @@ public class GameState {
                 }
                 defender.setOwner(attacker.owner);
                 win = true;
-            }
-            else {
+            } else {
                 attacker.decrementTroopCount();
                 win = false;
             }
-        }
-
-        else if (attackerCubes.length == 1 && defenderCubes.length == 2) {
+        } else if (attackerCubes.length == 1 && defenderCubes.length == 2) {
             if (attackerCubes[0] >= defenderCubes[0]) {
                 defender.decrementTroopCount();
                 win = false;
@@ -298,9 +305,7 @@ public class GameState {
                 attacker.decrementTroopCount();
                 win = false;
             }
-        }
-
-        else {
+        } else {
             if (attackerCubes[0] >= defenderCubes[0]) {
                 defender.decrementTroopCount();
                 if (attackerCubes[1] >= defenderCubes[1]) {
@@ -328,15 +333,17 @@ public class GameState {
         }
         return win;
     }
-    public int getAcquiredCount(){
+
+    public int getAcquiredCount() {
         return this.acquiredCount;
     }
 
-    public int getNationCount(){
+    public int getNationCount() {
         return this.nationCount;
     }
+
     public Map<String, NationClass> getNations() {
-        if(nations==null) nations = new HashMap<>();
+        if (nations == null) nations = new HashMap<>();
         return nations;
     }
 
@@ -349,7 +356,7 @@ public class GameState {
     }
 
     public Map<String, Continent> getContinents() {
-        if(continents == null) continents=new HashMap<>();
+        if (continents == null) continents = new HashMap<>();
         return continents;
     }
 
@@ -360,7 +367,7 @@ public class GameState {
 
     public NationIF getNextUnoccupied() {
         Iterator<NationClass> i = nations.values().iterator();
-        while (i.hasNext()){
+        while (i.hasNext()) {
             NationIF n = i.next();
             if (n.isUnOccupied())
                 return n;
@@ -374,6 +381,7 @@ public class GameState {
         if (c.ownedBy != null)
             c.ownedBy.setBonus(c.getAddValue());
     }
+
     public boolean isPlayerOnesTurn() {
         return isPlayerOnesTurn;
     }
