@@ -55,9 +55,19 @@ public class NationClass extends Path implements NationIF {
 
     //@Override
     public boolean isNeighbourOf(NationClass nation){
-        for (String nationId: neighbors){
-            if (nationId != null && nationId.equals(nation.getName()))
-                return true;
+        String s;
+        boolean neighborOf = false;
+        if (neighbors == null) {
+            System.out.println(this.getName() + "NULL neighbor");
+            return true;
+        }
+        for (int i = 0; i < neighbors.length; i++){
+            if (!neighbors[i].isEmpty() &&
+                neighbors[i].equals(nation)){
+                   neighborOf = true;
+                   break;
+            }
+            i++;
         }
         return false;
     }

@@ -76,17 +76,17 @@ public class GameState {
         ArrayList<NationClass> nlist = ownedNationsByPlayer.get(Owner.Player1);
         Iterator<NationClass> i = nlist.iterator();
         NationClass n = null;
-        while (i.hasNext() && Owner.Player1.getAmountReinforcement() > 0){
+        while (i.hasNext() && Owner.Player1.getAmountReinforcement() > 5){
             n = i.next();
-            n.setTroopCountInt(1);
-            Owner.Player1.decrementOwnedReinforcements();
+            n.setTroopCountInt(5);
+            Owner.Player1.decrementOwnedReinforcementsBy(5);
         }
         nlist = ownedNationsByPlayer.get(Owner.Player2);
         i = nlist.iterator();
-        while (i.hasNext() && Owner.Player2.getAmountReinforcement() > 0){
+        while (i.hasNext() && Owner.Player2.getAmountReinforcement() > 5){
             n = i.next();
-            n.setTroopCountInt(1);
-            Owner.Player2.decrementOwnedReinforcements();
+            n.setTroopCountInt(5);
+            Owner.Player2.decrementOwnedReinforcementsBy(5);
         }
         System.out.println(" Owner.Player1 nations " + Owner.Player1.getOwnedNationCount());
         System.out.println(" Owner.Player2 nations " + Owner.Player2.getOwnedNationCount());

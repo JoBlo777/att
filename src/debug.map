@@ -1,7 +1,7 @@
 patch-of TerritoryOne 10 10 20 10 20 20 10 20
 patch-of TerritoryTwo 1240 10 1230 10 1230 20 1240 20
 patch-of TerritoryThree 1240 540 1230 540 1230 530 1240 530
-patch-of TerritoryFour  10  540 20 540 20 530 10 530
+patch-of TerritoryFour 10 540 20 540 20 530 10 530
 patch-of TerritoryFive 10 300 20 300 20 290 10 290
 patch-of TerritorySix 1240 300 1230 300 1230 290 1240 290
 patch-of TerritorySeven 630 10 620 10 620 20 630 20

@@ -38,6 +38,9 @@ public enum Owner {
     public void decrementOwnedReinforcements(){
         this.amountReinforcement--;
     }
+    public void decrementOwnedReinforcementsBy(int i){
+        this.amountReinforcement = this.amountReinforcement - i;
+    }
 
     public int getOwnedNationCount(){
         return nationCount;
@@ -54,7 +57,7 @@ public enum Owner {
     }
 
     public void setAmountReinforcement(){
-        amountReinforcement = nationCount/3 + bonus;
+        amountReinforcement = nationCount*10/3 + bonus; // test
     }
     public int getAmountReinforcement(){
         return amountReinforcement;

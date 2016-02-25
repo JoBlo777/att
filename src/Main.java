@@ -63,6 +63,7 @@ public class Main extends Application {
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\pk15w19p_Abschlussbeispiel\\pk15w19p_Abschlussbeispiel/africa.map");
         //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/africa.map");
         FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/world.map");
+        //FileReader fr = new FileReader("C:\\dld\\PK2015WS\\att\\src/three-continents.map");
         BufferedReader br = new BufferedReader(fr);
         String zeile="";
 
