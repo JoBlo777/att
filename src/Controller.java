@@ -140,7 +140,7 @@ public class Controller {
                         Iterator<NationClass> i = list.iterator();
                         while (cont && i.hasNext()){
                             nation = i.next();
-                            if (s.nations.get(id).isNeighbourOf(nation)){
+                            if (true || s.nations.get(id).isNeighbourOf(nation)){
                                 System.out.println("match");
                                 System.out.println("attacker id"  + ((Path)nation).getId() + " attacker owner " + nation.getOwner()
                                         + " attacker troop count " + nation.getTroopCount());
@@ -148,6 +148,11 @@ public class Controller {
                                         + " defender troop count " + s.nations.get(id).getTroopCount());
                                 if (s.isAttackSuccesful(nation, s.nations.get(id))) {
                                     System.out.println("AI CONQUERED country " + s.nations.get(id));
+                                    if (s.troopMoveSuccessful (nation, s.nations.get(id),s.nations.get(id).getTroopCount().intValue()-1)) {
+                                        System.out.println("AI NACH VERSCHIEBEN country count = " + s.bewegenVonNachTuple[1].getTroopCount());
+                                    } else {
+                                        System.out.println("AI NICHT VERSCHOBEN");
+                                    }
                                     //s.updateNationsOwnedBy(Owner.Player1, s.attackNationTuple[0]);
                                     //s.updateNationsOwnedBy(Owner.Player2, s.attackNationTuple[1]);
                                     //s.attackNationTuple[0].setOwner(Owner.Player1);
