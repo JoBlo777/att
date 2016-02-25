@@ -160,15 +160,15 @@ public class Controller {
                                     //s.attackNationTuple[0].setOwner(Owner.Player2);
                                     //s.attackNationTuple[1].setOwner(Owner.Player2);
                                 }
-                                System.out.println("nach angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
-                                System.out.println("nach angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
-                                s.attackNationTupleCount = 0;
-                                s.gameProgress = GameState.GameProgress.Bewegen;
-                                s.status.setValue("Bewegen");
                                 cont = false;
                             }
                         }
                     }
+                    s.attackNationTupleCount = 0;
+                    System.out.println("nach angriff player1 nations " + s.printNationsOwnedBy(Owner.Player1));
+                    System.out.println("nach angriff player2 nations " + s.printNationsOwnedBy(Owner.Player2));
+                    s.gameProgress = GameState.GameProgress.Bewegen;
+                    s.status.setValue("Bewegen");
                 }
                 break;
             }

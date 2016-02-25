@@ -139,10 +139,12 @@ public class Main extends Application {
                         System.out.println("About");
                     }
                 });
-                MenuItem item2 = new MenuItem("Preferences");
+                MenuItem item2 = new MenuItem("Exit GAME");
                 item2.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent e) {
                         System.out.println("Preferences");
+                        Platform.exit();
+                        System.exit(0);
                     }
                 });
                 contextMenu.getItems().addAll(item1, item2);
